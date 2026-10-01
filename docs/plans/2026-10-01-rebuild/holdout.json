@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "purpose": "未用於 prompt 調整的 live functional smoke；不是可靠率估計",
+  "cases": [
+    {"id":"H01","kind":"chat","messages":["我和伴侶交往兩年，週六想在台南安排雨天約會，預算900元，對方乳糖不耐。","更正：地點改新竹，預算600元，只想在室內並搭大眾運輸。請依更正後條件給一個計畫。"],"rubric":"第二輪依新竹、600元、室內、大眾運輸及乳糖不耐規劃，不沿用已更正台南/900元，不捏造特定店價。"},
+    {"id":"H02","kind":"report","message":"我已婚，想跟配偶改善家務分工。我們都輪班，只有週二晚上有空，不想用責備方式溝通，也不想花錢買禮物。","rubric":"LoveReport schema合法；建議符合輪班/週二/不責備/不靠花錢，不能捏造配偶心理。"},
+    {"id":"H03","kind":"rag","document":"# 橙溪書室公告\n橙溪書室星期三11:40開門、18:20閉館。\n週四有夜間閱讀活動，20:10開始。\n公告沒有館主生日資料。","questions":["依公告，橙溪書室星期三何時開門與閉館？","館主的生日是哪一天？如果公告沒有，請明確說明。"],"rubric":"回答11:40與18:20可對到匯入引用；生日明確承認公告無資料，不捏造。"},
+    {"id":"H04","kind":"tools","goal":"搜尋 Python asyncio 官方文件，整理搜尋來源與簡短重點成一份名為 asyncio-notes.pdf 的中文 PDF，完成後回答產物名稱。","rubric":"實際searchWeb成功先於generatePDF；PDF非空可下載且内容有真搜尋來源，不把 fixture 或被阻擋當成功。"},
+    {"id":"H05","kind":"images","query":"Taiwan tea ceremony","rubric":"真 Commons provider 回至少一張圖片，作者、來源與授權資訊完整。"},
+    {"id":"H06","kind":"no_tools","goal":"不需要使用工具。請用兩句繁體中文解釋為什麼溝通前可以先釐清自己的需求。","rubric":"無tool call、非空答案、succeeded，不跑滿步數上限。"}
+  ]
+}

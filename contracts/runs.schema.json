@@ -1,0 +1,571 @@
+{
+  "$defs": {
+    "Call": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "tool_call",
+          "default": "tool_call",
+          "title": "Type",
+          "type": "string"
+        },
+        "call": {
+          "$ref": "#/$defs/ToolCall"
+        }
+      },
+      "required": [
+        "call"
+      ],
+      "title": "Call",
+      "type": "object"
+    },
+    "Final": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "done",
+          "default": "done",
+          "title": "Type",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "failed",
+            "cancelled",
+            "limit"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "answer": {
+          "maxLength": 16000,
+          "title": "Answer",
+          "type": "string"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code"
+        },
+        "usage": {
+          "$ref": "#/$defs/Usage"
+        }
+      },
+      "required": [
+        "status",
+        "answer"
+      ],
+      "title": "Final",
+      "type": "object"
+    },
+    "Result": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "tool_result",
+          "default": "tool_result",
+          "title": "Type",
+          "type": "string"
+        },
+        "result": {
+          "$ref": "#/$defs/ToolResult"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "title": "Result",
+      "type": "object"
+    },
+    "Run": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "conversation_id": {
+          "format": "uuid",
+          "title": "Conversation Id",
+          "type": "string"
+        },
+        "turn_id": {
+          "format": "uuid",
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "workspace_id": {
+          "format": "uuid",
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "goal": {
+          "title": "Goal",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "running",
+            "succeeded",
+            "failed",
+            "cancelled",
+            "limit"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "max_steps": {
+          "title": "Max Steps",
+          "type": "integer"
+        },
+        "max_calls": {
+          "title": "Max Calls",
+          "type": "integer"
+        },
+        "answer": {
+          "title": "Answer",
+          "type": "string"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Error Code"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Finished At"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/RunEvent"
+          },
+          "title": "Events",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "conversation_id",
+        "turn_id",
+        "workspace_id",
+        "goal",
+        "status",
+        "max_steps",
+        "max_calls",
+        "answer",
+        "error_code",
+        "created_at",
+        "finished_at"
+      ],
+      "title": "Run",
+      "type": "object"
+    },
+    "RunEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": 1,
+          "default": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "run_id": {
+          "format": "uuid",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "elapsed_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Elapsed Ms",
+          "type": "integer"
+        },
+        "data": {
+          "discriminator": {
+            "mapping": {
+              "done": "#/$defs/Final",
+              "started": "#/$defs/Started",
+              "state": "#/$defs/State",
+              "tool_call": "#/$defs/Call",
+              "tool_result": "#/$defs/Result"
+            },
+            "propertyName": "type"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Started"
+            },
+            {
+              "$ref": "#/$defs/State"
+            },
+            {
+              "$ref": "#/$defs/Call"
+            },
+            {
+              "$ref": "#/$defs/Result"
+            },
+            {
+              "$ref": "#/$defs/Final"
+            }
+          ],
+          "title": "Data"
+        }
+      },
+      "required": [
+        "run_id",
+        "sequence",
+        "data"
+      ],
+      "title": "RunEvent",
+      "type": "object"
+    },
+    "RunRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "goal": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Goal",
+          "type": "string"
+        },
+        "max_steps": {
+          "default": 6,
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Max Steps",
+          "type": "integer"
+        },
+        "max_calls": {
+          "default": 12,
+          "maximum": 24,
+          "minimum": 1,
+          "title": "Max Calls",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "goal"
+      ],
+      "title": "RunRequest",
+      "type": "object"
+    },
+    "RuntimeConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "enum": [
+            "fake",
+            "cloudflare"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "tools_mode": {
+          "enum": [
+            "fixture",
+            "live"
+          ],
+          "title": "Tools Mode",
+          "type": "string"
+        },
+        "images_mode": {
+          "enum": [
+            "fixture",
+            "live"
+          ],
+          "title": "Images Mode",
+          "type": "string"
+        },
+        "persistence_scope": {
+          "enum": [
+            "disabled",
+            "development",
+            "test"
+          ],
+          "title": "Persistence Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "tools_mode",
+        "images_mode",
+        "persistence_scope"
+      ],
+      "title": "RuntimeConfig",
+      "type": "object"
+    },
+    "Started": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "started",
+          "default": "started",
+          "title": "Type",
+          "type": "string"
+        },
+        "workspace_id": {
+          "format": "uuid",
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "provider": {
+          "enum": [
+            "fake",
+            "cloudflare"
+          ],
+          "title": "Provider",
+          "type": "string"
+        },
+        "tools_mode": {
+          "default": "fixture",
+          "enum": [
+            "fixture",
+            "live"
+          ],
+          "title": "Tools Mode",
+          "type": "string"
+        },
+        "images_mode": {
+          "default": "fixture",
+          "enum": [
+            "fixture",
+            "live"
+          ],
+          "title": "Images Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "provider"
+      ],
+      "title": "Started",
+      "type": "object"
+    },
+    "State": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "state",
+          "default": "state",
+          "title": "Type",
+          "type": "string"
+        },
+        "phase": {
+          "enum": [
+            "thinking",
+            "tool_running"
+          ],
+          "title": "Phase",
+          "type": "string"
+        },
+        "step": {
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Step",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "phase",
+        "step"
+      ],
+      "title": "State",
+      "type": "object"
+    },
+    "ToolCall": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "arguments": {
+          "additionalProperties": true,
+          "title": "Arguments",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "arguments"
+      ],
+      "title": "ToolCall",
+      "type": "object"
+    },
+    "ToolResult": {
+      "additionalProperties": false,
+      "properties": {
+        "tool_call_id": {
+          "title": "Tool Call Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "success",
+            "error"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message"
+        }
+      },
+      "required": [
+        "tool_call_id",
+        "name",
+        "status"
+      ],
+      "title": "ToolResult",
+      "type": "object"
+    },
+    "Usage": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "default": "unknown",
+          "enum": [
+            "provider",
+            "unknown",
+            "estimated"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Tokens"
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Tokens"
+        }
+      },
+      "title": "Usage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "request": {
+      "$ref": "#/$defs/RunRequest"
+    },
+    "run": {
+      "$ref": "#/$defs/Run"
+    },
+    "event": {
+      "$ref": "#/$defs/RunEvent"
+    },
+    "config": {
+      "$ref": "#/$defs/RuntimeConfig"
+    }
+  },
+  "required": [
+    "request",
+    "run",
+    "event",
+    "config"
+  ],
+  "title": "RunModels",
+  "type": "object"
+}

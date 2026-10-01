@@ -1,0 +1,255 @@
+{
+  "$defs": {
+    "Conversation": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "created_at",
+        "updated_at"
+      ],
+      "title": "Conversation",
+      "type": "object"
+    },
+    "ConversationDetail": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "turns": {
+          "items": {
+            "$ref": "#/$defs/Turn"
+          },
+          "title": "Turns",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "created_at",
+        "updated_at",
+        "turns"
+      ],
+      "title": "ConversationDetail",
+      "type": "object"
+    },
+    "LoveReport": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "suggestions": {
+          "items": {
+            "maxLength": 1200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Suggestions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "title",
+        "suggestions"
+      ],
+      "title": "LoveReport",
+      "type": "object"
+    },
+    "NewConversation": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "default": "新的戀愛諮詢",
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "title": "NewConversation",
+      "type": "object"
+    },
+    "SavedReport": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "conversation_id": {
+          "format": "uuid",
+          "title": "Conversation Id",
+          "type": "string"
+        },
+        "source_position": {
+          "title": "Source Position",
+          "type": "integer"
+        },
+        "content": {
+          "$ref": "#/$defs/LoveReport"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "conversation_id",
+        "source_position",
+        "content",
+        "created_at"
+      ],
+      "title": "SavedReport",
+      "type": "object"
+    },
+    "Turn": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "conversation_id": {
+          "format": "uuid",
+          "title": "Conversation Id",
+          "type": "string"
+        },
+        "position": {
+          "title": "Position",
+          "type": "integer"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "answer": {
+          "title": "Answer",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "running",
+            "completed",
+            "failed",
+            "cancelled"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Error Code"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Finished At"
+        }
+      },
+      "required": [
+        "id",
+        "conversation_id",
+        "position",
+        "question",
+        "answer",
+        "status",
+        "error_code",
+        "created_at",
+        "finished_at"
+      ],
+      "title": "Turn",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "conversation": {
+      "$ref": "#/$defs/Conversation"
+    },
+    "detail": {
+      "$ref": "#/$defs/ConversationDetail"
+    },
+    "report": {
+      "$ref": "#/$defs/SavedReport"
+    },
+    "new_conversation": {
+      "$ref": "#/$defs/NewConversation"
+    }
+  },
+  "required": [
+    "conversation",
+    "detail",
+    "report",
+    "new_conversation"
+  ],
+  "title": "ApiModels",
+  "type": "object"
+}

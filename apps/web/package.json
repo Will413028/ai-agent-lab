@@ -1,0 +1,32 @@
+{
+  "name": "@ai-agent-lab/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1 --port 13761",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1 --port 13761",
+    "lint": "next typegen && eslint . && tsc --noEmit",
+    "test": "node check-contracts.mjs && vitest run",
+    "test:e2e": "playwright test",
+    "generate:types": "json2ts -i ../../contracts/chat-event.schema.json -o src/lib/chat-event.generated.ts && json2ts -i ../../contracts/conversation.schema.json -o src/lib/conversation.generated.ts && json2ts -i ../../contracts/rag.schema.json -o src/lib/rag.generated.ts && json2ts -i ../../contracts/tools.schema.json -o src/lib/tools.generated.ts && json2ts -i ../../contracts/images.schema.json -o src/lib/images.generated.ts && json2ts -i ../../contracts/runs.schema.json -o src/lib/runs.generated.ts"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.3.8",
+    "json-schema-to-typescript": "16.0.0",
+    "typescript": "6.0.3",
+    "vitest": "5.0.2"
+  }
+}

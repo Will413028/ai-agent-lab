@@ -1,0 +1,156 @@
+{
+  "$defs": {
+    "DeltaEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "request_id": {
+          "format": "uuid",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "type": {
+          "const": "delta",
+          "title": "Type",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "request_id",
+        "sequence",
+        "type",
+        "text"
+      ],
+      "title": "DeltaEvent",
+      "type": "object"
+    },
+    "DoneEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "request_id": {
+          "format": "uuid",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "type": {
+          "const": "done",
+          "title": "Type",
+          "type": "string"
+        },
+        "usage": {
+          "title": "Usage",
+          "type": "null"
+        }
+      },
+      "required": [
+        "version",
+        "request_id",
+        "sequence",
+        "type",
+        "usage"
+      ],
+      "title": "DoneEvent",
+      "type": "object"
+    },
+    "ErrorEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "request_id": {
+          "format": "uuid",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "type": {
+          "const": "error",
+          "title": "Type",
+          "type": "string"
+        },
+        "code": {
+          "enum": [
+            "rate_limited",
+            "quota_exhausted",
+            "provider_timeout",
+            "dependency_failure",
+            "provider_failure"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "version",
+        "request_id",
+        "sequence",
+        "type",
+        "code",
+        "message",
+        "retryable"
+      ],
+      "title": "ErrorEvent",
+      "type": "object"
+    }
+  },
+  "discriminator": {
+    "mapping": {
+      "delta": "#/$defs/DeltaEvent",
+      "done": "#/$defs/DoneEvent",
+      "error": "#/$defs/ErrorEvent"
+    },
+    "propertyName": "type"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/DeltaEvent"
+    },
+    {
+      "$ref": "#/$defs/DoneEvent"
+    },
+    {
+      "$ref": "#/$defs/ErrorEvent"
+    }
+  ],
+  "title": "ChatEvent"
+}

@@ -1,0 +1,236 @@
+{
+  "$defs": {
+    "Artifact": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "workspace_id": {
+          "format": "uuid",
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "media_type": {
+          "title": "Media Type",
+          "type": "string"
+        },
+        "size": {
+          "minimum": 0,
+          "title": "Size",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "workspace_id",
+        "name",
+        "media_type",
+        "size"
+      ],
+      "title": "Artifact",
+      "type": "object"
+    },
+    "ToolCall": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "arguments": {
+          "additionalProperties": true,
+          "title": "Arguments",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "arguments"
+      ],
+      "title": "ToolCall",
+      "type": "object"
+    },
+    "ToolDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "parameters": {
+          "additionalProperties": true,
+          "title": "Parameters",
+          "type": "object"
+        },
+        "side_effect": {
+          "title": "Side Effect",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "parameters",
+        "side_effect"
+      ],
+      "title": "ToolDefinition",
+      "type": "object"
+    },
+    "ToolRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "workspace_id": {
+          "format": "uuid",
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "calls": {
+          "items": {
+            "$ref": "#/$defs/ToolCall"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Calls",
+          "type": "array"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "calls"
+      ],
+      "title": "ToolRequest",
+      "type": "object"
+    },
+    "ToolResult": {
+      "additionalProperties": false,
+      "properties": {
+        "tool_call_id": {
+          "title": "Tool Call Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "success",
+            "error"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message"
+        }
+      },
+      "required": [
+        "tool_call_id",
+        "name",
+        "status"
+      ],
+      "title": "ToolResult",
+      "type": "object"
+    },
+    "Workspace": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "Workspace",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact": {
+      "$ref": "#/$defs/Artifact"
+    },
+    "call": {
+      "$ref": "#/$defs/ToolCall"
+    },
+    "result": {
+      "$ref": "#/$defs/ToolResult"
+    },
+    "definition": {
+      "$ref": "#/$defs/ToolDefinition"
+    },
+    "request": {
+      "$ref": "#/$defs/ToolRequest"
+    },
+    "workspace": {
+      "$ref": "#/$defs/Workspace"
+    }
+  },
+  "required": [
+    "artifact",
+    "call",
+    "result",
+    "definition",
+    "request",
+    "workspace"
+  ],
+  "title": "ToolModels",
+  "type": "object"
+}

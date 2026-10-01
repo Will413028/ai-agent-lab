@@ -1,0 +1,13 @@
+{
+  "name": "ai-agent-lab",
+  "private": true,
+  "packageManager": "pnpm@11.2.2",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "dev": "pnpm --filter @ai-agent-lab/web dev",
+    "lint": "pnpm --filter @ai-agent-lab/web lint",
+    "build": "pnpm --filter @ai-agent-lab/web build",
+    "test": "pnpm --filter @ai-agent-lab/web test",
+    "test:e2e": "pnpm --filter @ai-agent-lab/web test:e2e"
+  }
+}

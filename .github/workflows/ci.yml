@@ -1,0 +1,48 @@
+name: Offline checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  skeleton:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.2.2
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Install pinned dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install -r apps/api/requirements.lock
+          pnpm install --frozen-lockfile
+          pnpm --dir apps/web exec playwright install --with-deps chromium
+      - name: Lint, contracts, unit tests and production build
+        run: make check
+      - name: PostgreSQL integration and browser checks against production servers
+        run: make check-chat
+      - name: pgvector retrieval, mutations and knowledge browser checks
+        run: make check-rag
+      - name: Tool boundaries, PDF downloads and isolated terminal
+        run: make check-tools
+      - name: Real MCP process, discovery and image browser
+        run: make check-mcp
+      - name: Agent state, cancellation, mutations, persistence and browser
+        run: make check-agent
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-failures
+          path: apps/web/test-results/

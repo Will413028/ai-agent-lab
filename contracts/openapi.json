@@ -1,0 +1,2493 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AI Agent Lab",
+    "version": "0.2.0"
+  },
+  "paths": {
+    "/runtime/config": {
+      "get": {
+        "summary": "Runtime Config",
+        "operationId": "runtime_config_runtime_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeConfig"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{conversation_id}/runs/stream": {
+      "post": {
+        "summary": "Agent Run",
+        "operationId": "agent_run_conversations__conversation_id__runs_stream_post",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{conversation_id}/runs": {
+      "get": {
+        "summary": "List Runs",
+        "operationId": "list_runs_conversations__conversation_id__runs_get",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Run"
+                  },
+                  "title": "Response List Runs Conversations  Conversation Id  Runs Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{conversation_id}/runs/{run_id}": {
+      "get": {
+        "summary": "Run Detail",
+        "operationId": "run_detail_conversations__conversation_id__runs__run_id__get",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{conversation_id}/runs/{run_id}/cancel": {
+      "post": {
+        "summary": "Cancel Run",
+        "operationId": "cancel_run_conversations__conversation_id__runs__run_id__cancel_post",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mcp/images/tools": {
+      "get": {
+        "summary": "Discover Image Tools",
+        "operationId": "discover_image_tools_mcp_images_tools_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ToolDefinition"
+                  },
+                  "type": "array",
+                  "title": "Response Discover Image Tools Mcp Images Tools Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mcp/images/search": {
+      "post": {
+        "summary": "Search Images",
+        "operationId": "search_images_mcp_images_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageSearchResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tools": {
+      "get": {
+        "summary": "Tool Definitions",
+        "operationId": "tool_definitions_tools_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ToolDefinition"
+                  },
+                  "type": "array",
+                  "title": "Response Tool Definitions Tools Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces": {
+      "post": {
+        "summary": "Create Workspace",
+        "operationId": "create_workspace_workspaces_post",
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Workspace"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/artifacts": {
+      "get": {
+        "summary": "List Artifacts",
+        "operationId": "list_artifacts_workspaces__workspace_id__artifacts_get",
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Workspace Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Artifact"
+                  },
+                  "title": "Response List Artifacts Workspaces  Workspace Id  Artifacts Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspaces/{workspace_id}/artifacts/{artifact_id}": {
+      "get": {
+        "summary": "Download Artifact",
+        "operationId": "download_artifact_workspaces__workspace_id__artifacts__artifact_id__get",
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Workspace Id"
+            }
+          },
+          {
+            "name": "artifact_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Artifact Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tools/invoke": {
+      "post": {
+        "summary": "Invoke Tools",
+        "operationId": "invoke_tools_tools_invoke_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToolRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ToolResult"
+                  },
+                  "type": "array",
+                  "title": "Response Invoke Tools Tools Invoke Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Health Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat": {
+      "post": {
+        "summary": "Chat",
+        "operationId": "chat_chat_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations": {
+      "get": {
+        "summary": "Conversations",
+        "operationId": "conversations_conversations_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Conversation"
+                  },
+                  "type": "array",
+                  "title": "Response Conversations Conversations Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Conversation",
+        "operationId": "create_conversation_conversations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewConversation"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Conversation"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{conversation_id}": {
+      "get": {
+        "summary": "Conversation",
+        "operationId": "conversation_conversations__conversation_id__get",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Conversation",
+        "operationId": "delete_conversation_conversations__conversation_id__delete",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{conversation_id}/chat": {
+      "post": {
+        "summary": "Conversation Chat",
+        "operationId": "conversation_chat_conversations__conversation_id__chat_post",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents": {
+      "get": {
+        "summary": "Documents",
+        "operationId": "documents_documents_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Document"
+                  },
+                  "type": "array",
+                  "title": "Response Documents Documents Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Import Document",
+        "operationId": "import_document_documents_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_import_document_documents_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Document"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/{document_id}": {
+      "delete": {
+        "summary": "Delete Document",
+        "operationId": "delete_document_documents__document_id__delete",
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/reindex": {
+      "post": {
+        "summary": "Reindex Documents",
+        "operationId": "reindex_documents_documents_reindex_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Document"
+                  },
+                  "type": "array",
+                  "title": "Response Reindex Documents Documents Reindex Post"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/retrieval": {
+      "post": {
+        "summary": "Preview Retrieval",
+        "operationId": "preview_retrieval_retrieval_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetrievalResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{conversation_id}/retrievals": {
+      "get": {
+        "summary": "Conversation Retrievals",
+        "operationId": "conversation_retrievals_conversations__conversation_id__retrievals_get",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TurnRetrieval"
+                  },
+                  "title": "Response Conversation Retrievals Conversations  Conversation Id  Retrievals Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{conversation_id}/rag": {
+      "post": {
+        "summary": "Rag Chat",
+        "operationId": "rag_chat_conversations__conversation_id__rag_post",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RagRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{conversation_id}/reports": {
+      "get": {
+        "summary": "Reports",
+        "operationId": "reports_conversations__conversation_id__reports_get",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SavedReport"
+                  },
+                  "title": "Response Reports Conversations  Conversation Id  Reports Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Generate Report",
+        "operationId": "generate_report_conversations__conversation_id__reports_post",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedReport"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{conversation_id}/reply": {
+      "post": {
+        "summary": "Synchronous Reply",
+        "operationId": "synchronous_reply_conversations__conversation_id__reply_post",
+        "parameters": [
+          {
+            "name": "conversation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Conversation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Turn"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Artifact": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Workspace Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "media_type": {
+            "type": "string",
+            "title": "Media Type"
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Size"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "workspace_id",
+          "name",
+          "media_type",
+          "size"
+        ],
+        "title": "Artifact"
+      },
+      "Body_import_document_documents_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "relationship_status": {
+            "type": "string",
+            "enum": [
+              "general",
+              "single",
+              "dating",
+              "married"
+            ],
+            "title": "Relationship Status",
+            "default": "general"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_import_document_documents_post"
+      },
+      "Call": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "tool_call",
+            "title": "Type",
+            "default": "tool_call"
+          },
+          "call": {
+            "$ref": "#/components/schemas/ToolCall"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "call"
+        ],
+        "title": "Call"
+      },
+      "ChatRequest": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Message"
+          },
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "slow",
+              "rate_limit",
+              "quota",
+              "timeout",
+              "dependency_failure"
+            ],
+            "title": "Scenario",
+            "default": "normal"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "ChatRequest"
+      },
+      "Citation": {
+        "properties": {
+          "chunk_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Chunk Id"
+          },
+          "document_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Document Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "relationship_status": {
+            "type": "string",
+            "enum": [
+              "general",
+              "single",
+              "dating",
+              "married"
+            ],
+            "title": "Relationship Status"
+          },
+          "ordinal": {
+            "type": "integer",
+            "title": "Ordinal"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "chunk_id",
+          "document_id",
+          "name",
+          "relationship_status",
+          "ordinal",
+          "content",
+          "score"
+        ],
+        "title": "Citation"
+      },
+      "Conversation": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "Conversation"
+      },
+      "ConversationDetail": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "turns": {
+            "items": {
+              "$ref": "#/components/schemas/Turn"
+            },
+            "type": "array",
+            "title": "Turns"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "created_at",
+          "updated_at",
+          "turns"
+        ],
+        "title": "ConversationDetail"
+      },
+      "Document": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "relationship_status": {
+            "type": "string",
+            "enum": [
+              "general",
+              "single",
+              "dating",
+              "married"
+            ],
+            "title": "Relationship Status"
+          },
+          "digest": {
+            "type": "string",
+            "title": "Digest"
+          },
+          "embedding_model": {
+            "type": "string",
+            "title": "Embedding Model"
+          },
+          "embedding_version": {
+            "type": "string",
+            "title": "Embedding Version"
+          },
+          "embedding_dimension": {
+            "type": "integer",
+            "title": "Embedding Dimension"
+          },
+          "chunk_version": {
+            "type": "string",
+            "title": "Chunk Version"
+          },
+          "chunk_count": {
+            "type": "integer",
+            "title": "Chunk Count"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "relationship_status",
+          "digest",
+          "embedding_model",
+          "embedding_version",
+          "embedding_dimension",
+          "chunk_version",
+          "chunk_count",
+          "keywords",
+          "created_at"
+        ],
+        "title": "Document"
+      },
+      "EmbeddingProfile": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "dimension": {
+            "type": "integer",
+            "maximum": 4096.0,
+            "minimum": 1.0,
+            "title": "Dimension"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "model",
+          "version",
+          "dimension"
+        ],
+        "title": "EmbeddingProfile"
+      },
+      "Final": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "done",
+            "title": "Type",
+            "default": "done"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "succeeded",
+              "failed",
+              "cancelled",
+              "limit"
+            ],
+            "title": "Status"
+          },
+          "answer": {
+            "type": "string",
+            "maxLength": 16000,
+            "title": "Answer"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "answer"
+        ],
+        "title": "Final"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ImageResult": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url"
+          },
+          "artist": {
+            "type": "string",
+            "title": "Artist"
+          },
+          "license": {
+            "type": "string",
+            "title": "License"
+          },
+          "license_url": {
+            "type": "string",
+            "title": "License Url"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title",
+          "url",
+          "source_url",
+          "artist",
+          "license",
+          "license_url"
+        ],
+        "title": "ImageResult"
+      },
+      "ImageSearchRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Query"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "ImageSearchRequest"
+      },
+      "ImageSearchResult": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "images": {
+            "items": {
+              "$ref": "#/components/schemas/ImageResult"
+            },
+            "type": "array",
+            "maxItems": 5,
+            "title": "Images"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "provider",
+          "images"
+        ],
+        "title": "ImageSearchResult"
+      },
+      "LoveReport": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "suggestions": {
+            "items": {
+              "type": "string",
+              "maxLength": 1200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 5,
+            "minItems": 1,
+            "title": "Suggestions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "title",
+          "suggestions"
+        ],
+        "title": "LoveReport"
+      },
+      "NewConversation": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Title",
+            "default": "新的戀愛諮詢"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "NewConversation"
+      },
+      "RagRequest": {
+        "properties": {
+          "relationship_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "general",
+                  "single",
+                  "dating",
+                  "married"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relationship Status"
+          },
+          "top_k": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "default": 3
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Threshold",
+            "default": 0.25
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Message"
+          },
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "slow",
+              "rate_limit",
+              "quota",
+              "timeout",
+              "dependency_failure"
+            ],
+            "title": "Scenario",
+            "default": "normal"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "RagRequest"
+      },
+      "Result": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "tool_result",
+            "title": "Type",
+            "default": "tool_result"
+          },
+          "result": {
+            "$ref": "#/components/schemas/ToolResult"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "result"
+        ],
+        "title": "Result"
+      },
+      "RetrievalOptions": {
+        "properties": {
+          "relationship_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "general",
+                  "single",
+                  "dating",
+                  "married"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relationship Status"
+          },
+          "top_k": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "default": 3
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Threshold",
+            "default": 0.25
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "RetrievalOptions"
+      },
+      "RetrievalResult": {
+        "properties": {
+          "original_question": {
+            "type": "string",
+            "title": "Original Question"
+          },
+          "retrieval_query": {
+            "type": "string",
+            "title": "Retrieval Query"
+          },
+          "options": {
+            "$ref": "#/components/schemas/RetrievalOptions"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/EmbeddingProfile"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "type": "array",
+            "title": "Citations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "original_question",
+          "retrieval_query",
+          "options",
+          "profile",
+          "citations"
+        ],
+        "title": "RetrievalResult"
+      },
+      "Run": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "conversation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Conversation Id"
+          },
+          "turn_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Turn Id"
+          },
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Workspace Id"
+          },
+          "goal": {
+            "type": "string",
+            "title": "Goal"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "running",
+              "succeeded",
+              "failed",
+              "cancelled",
+              "limit"
+            ],
+            "title": "Status"
+          },
+          "max_steps": {
+            "type": "integer",
+            "title": "Max Steps"
+          },
+          "max_calls": {
+            "type": "integer",
+            "title": "Max Calls"
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/RunEvent"
+            },
+            "type": "array",
+            "title": "Events"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "conversation_id",
+          "turn_id",
+          "workspace_id",
+          "goal",
+          "status",
+          "max_steps",
+          "max_calls",
+          "answer",
+          "error_code",
+          "created_at",
+          "finished_at"
+        ],
+        "title": "Run"
+      },
+      "RunEvent": {
+        "properties": {
+          "version": {
+            "type": "integer",
+            "const": 1,
+            "title": "Version",
+            "default": 1
+          },
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sequence"
+          },
+          "elapsed_ms": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Elapsed Ms",
+            "default": 0
+          },
+          "data": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Started"
+              },
+              {
+                "$ref": "#/components/schemas/State"
+              },
+              {
+                "$ref": "#/components/schemas/Call"
+              },
+              {
+                "$ref": "#/components/schemas/Result"
+              },
+              {
+                "$ref": "#/components/schemas/Final"
+              }
+            ],
+            "title": "Data",
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "done": "#/components/schemas/Final",
+                "started": "#/components/schemas/Started",
+                "state": "#/components/schemas/State",
+                "tool_call": "#/components/schemas/Call",
+                "tool_result": "#/components/schemas/Result"
+              }
+            }
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "sequence",
+          "data"
+        ],
+        "title": "RunEvent"
+      },
+      "RunRequest": {
+        "properties": {
+          "goal": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Goal"
+          },
+          "max_steps": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Max Steps",
+            "default": 6
+          },
+          "max_calls": {
+            "type": "integer",
+            "maximum": 24.0,
+            "minimum": 1.0,
+            "title": "Max Calls",
+            "default": 12
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "goal"
+        ],
+        "title": "RunRequest"
+      },
+      "RuntimeConfig": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "fake",
+              "cloudflare"
+            ],
+            "title": "Provider"
+          },
+          "tools_mode": {
+            "type": "string",
+            "enum": [
+              "fixture",
+              "live"
+            ],
+            "title": "Tools Mode"
+          },
+          "images_mode": {
+            "type": "string",
+            "enum": [
+              "fixture",
+              "live"
+            ],
+            "title": "Images Mode"
+          },
+          "persistence_scope": {
+            "type": "string",
+            "enum": [
+              "disabled",
+              "development",
+              "test"
+            ],
+            "title": "Persistence Scope"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "provider",
+          "tools_mode",
+          "images_mode",
+          "persistence_scope"
+        ],
+        "title": "RuntimeConfig"
+      },
+      "SavedReport": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "conversation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Conversation Id"
+          },
+          "source_position": {
+            "type": "integer",
+            "title": "Source Position"
+          },
+          "content": {
+            "$ref": "#/components/schemas/LoveReport"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "conversation_id",
+          "source_position",
+          "content",
+          "created_at"
+        ],
+        "title": "SavedReport"
+      },
+      "SearchRequest": {
+        "properties": {
+          "relationship_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "general",
+                  "single",
+                  "dating",
+                  "married"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relationship Status"
+          },
+          "top_k": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "default": 3
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Threshold",
+            "default": 0.25
+          },
+          "query": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Query"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "SearchRequest"
+      },
+      "Started": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "started",
+            "title": "Type",
+            "default": "started"
+          },
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Workspace Id"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "fake",
+              "cloudflare"
+            ],
+            "title": "Provider"
+          },
+          "tools_mode": {
+            "type": "string",
+            "enum": [
+              "fixture",
+              "live"
+            ],
+            "title": "Tools Mode",
+            "default": "fixture"
+          },
+          "images_mode": {
+            "type": "string",
+            "enum": [
+              "fixture",
+              "live"
+            ],
+            "title": "Images Mode",
+            "default": "fixture"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "workspace_id",
+          "provider"
+        ],
+        "title": "Started"
+      },
+      "State": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "state",
+            "title": "Type",
+            "default": "state"
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "thinking",
+              "tool_running"
+            ],
+            "title": "Phase"
+          },
+          "step": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Step"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "phase",
+          "step"
+        ],
+        "title": "State"
+      },
+      "ToolCall": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "arguments": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Arguments"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "arguments"
+        ],
+        "title": "ToolCall"
+      },
+      "ToolDefinition": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "parameters": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Parameters"
+          },
+          "side_effect": {
+            "type": "boolean",
+            "title": "Side Effect"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "parameters",
+          "side_effect"
+        ],
+        "title": "ToolDefinition"
+      },
+      "ToolRequest": {
+        "properties": {
+          "workspace_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Workspace Id"
+          },
+          "calls": {
+            "items": {
+              "$ref": "#/components/schemas/ToolCall"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Calls"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "workspace_id",
+          "calls"
+        ],
+        "title": "ToolRequest"
+      },
+      "ToolResult": {
+        "properties": {
+          "tool_call_id": {
+            "type": "string",
+            "title": "Tool Call Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "title": "Status"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "tool_call_id",
+          "name",
+          "status"
+        ],
+        "title": "ToolResult"
+      },
+      "Turn": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "conversation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Conversation Id"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "running",
+              "completed",
+              "failed",
+              "cancelled"
+            ],
+            "title": "Status"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "conversation_id",
+          "position",
+          "question",
+          "answer",
+          "status",
+          "error_code",
+          "created_at",
+          "finished_at"
+        ],
+        "title": "Turn"
+      },
+      "TurnRetrieval": {
+        "properties": {
+          "original_question": {
+            "type": "string",
+            "title": "Original Question"
+          },
+          "retrieval_query": {
+            "type": "string",
+            "title": "Retrieval Query"
+          },
+          "options": {
+            "$ref": "#/components/schemas/RetrievalOptions"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/EmbeddingProfile"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "type": "array",
+            "title": "Citations"
+          },
+          "turn_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Turn Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "original_question",
+          "retrieval_query",
+          "options",
+          "profile",
+          "citations",
+          "turn_id"
+        ],
+        "title": "TurnRetrieval"
+      },
+      "Usage": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "provider",
+              "unknown",
+              "estimated"
+            ],
+            "title": "Source",
+            "default": "unknown"
+          },
+          "input_tokens": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Tokens"
+          },
+          "output_tokens": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Tokens"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Usage"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "Workspace": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "Workspace"
+      }
+    }
+  }
+}

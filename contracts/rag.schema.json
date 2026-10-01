@@ -1,0 +1,412 @@
+{
+  "$defs": {
+    "Citation": {
+      "additionalProperties": false,
+      "properties": {
+        "chunk_id": {
+          "format": "uuid",
+          "title": "Chunk Id",
+          "type": "string"
+        },
+        "document_id": {
+          "format": "uuid",
+          "title": "Document Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "relationship_status": {
+          "enum": [
+            "general",
+            "single",
+            "dating",
+            "married"
+          ],
+          "title": "Relationship Status",
+          "type": "string"
+        },
+        "ordinal": {
+          "title": "Ordinal",
+          "type": "integer"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "chunk_id",
+        "document_id",
+        "name",
+        "relationship_status",
+        "ordinal",
+        "content",
+        "score"
+      ],
+      "title": "Citation",
+      "type": "object"
+    },
+    "Document": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "relationship_status": {
+          "enum": [
+            "general",
+            "single",
+            "dating",
+            "married"
+          ],
+          "title": "Relationship Status",
+          "type": "string"
+        },
+        "digest": {
+          "title": "Digest",
+          "type": "string"
+        },
+        "embedding_model": {
+          "title": "Embedding Model",
+          "type": "string"
+        },
+        "embedding_version": {
+          "title": "Embedding Version",
+          "type": "string"
+        },
+        "embedding_dimension": {
+          "title": "Embedding Dimension",
+          "type": "integer"
+        },
+        "chunk_version": {
+          "title": "Chunk Version",
+          "type": "string"
+        },
+        "chunk_count": {
+          "title": "Chunk Count",
+          "type": "integer"
+        },
+        "keywords": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Keywords",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "relationship_status",
+        "digest",
+        "embedding_model",
+        "embedding_version",
+        "embedding_dimension",
+        "chunk_version",
+        "chunk_count",
+        "keywords",
+        "created_at"
+      ],
+      "title": "Document",
+      "type": "object"
+    },
+    "EmbeddingProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "dimension": {
+          "maximum": 4096,
+          "minimum": 1,
+          "title": "Dimension",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "model",
+        "version",
+        "dimension"
+      ],
+      "title": "EmbeddingProfile",
+      "type": "object"
+    },
+    "RagRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "relationship_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "general",
+                "single",
+                "dating",
+                "married"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Relationship Status"
+        },
+        "top_k": {
+          "default": 3,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        },
+        "threshold": {
+          "default": 0.25,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Threshold",
+          "type": "number"
+        },
+        "message": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "scenario": {
+          "default": "normal",
+          "enum": [
+            "normal",
+            "slow",
+            "rate_limit",
+            "quota",
+            "timeout",
+            "dependency_failure"
+          ],
+          "title": "Scenario",
+          "type": "string"
+        }
+      },
+      "required": [
+        "message"
+      ],
+      "title": "RagRequest",
+      "type": "object"
+    },
+    "RetrievalOptions": {
+      "additionalProperties": false,
+      "properties": {
+        "relationship_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "general",
+                "single",
+                "dating",
+                "married"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Relationship Status"
+        },
+        "top_k": {
+          "default": 3,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        },
+        "threshold": {
+          "default": 0.25,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Threshold",
+          "type": "number"
+        }
+      },
+      "title": "RetrievalOptions",
+      "type": "object"
+    },
+    "RetrievalResult": {
+      "additionalProperties": false,
+      "properties": {
+        "original_question": {
+          "title": "Original Question",
+          "type": "string"
+        },
+        "retrieval_query": {
+          "title": "Retrieval Query",
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/$defs/RetrievalOptions"
+        },
+        "profile": {
+          "$ref": "#/$defs/EmbeddingProfile"
+        },
+        "citations": {
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "title": "Citations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "original_question",
+        "retrieval_query",
+        "options",
+        "profile",
+        "citations"
+      ],
+      "title": "RetrievalResult",
+      "type": "object"
+    },
+    "SearchRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "relationship_status": {
+          "anyOf": [
+            {
+              "enum": [
+                "general",
+                "single",
+                "dating",
+                "married"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Relationship Status"
+        },
+        "top_k": {
+          "default": 3,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Top K",
+          "type": "integer"
+        },
+        "threshold": {
+          "default": 0.25,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Threshold",
+          "type": "number"
+        },
+        "query": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Query",
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "title": "SearchRequest",
+      "type": "object"
+    },
+    "TurnRetrieval": {
+      "additionalProperties": false,
+      "properties": {
+        "original_question": {
+          "title": "Original Question",
+          "type": "string"
+        },
+        "retrieval_query": {
+          "title": "Retrieval Query",
+          "type": "string"
+        },
+        "options": {
+          "$ref": "#/$defs/RetrievalOptions"
+        },
+        "profile": {
+          "$ref": "#/$defs/EmbeddingProfile"
+        },
+        "citations": {
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "title": "Citations",
+          "type": "array"
+        },
+        "turn_id": {
+          "format": "uuid",
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "original_question",
+        "retrieval_query",
+        "options",
+        "profile",
+        "citations",
+        "turn_id"
+      ],
+      "title": "TurnRetrieval",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "document": {
+      "$ref": "#/$defs/Document"
+    },
+    "citation": {
+      "$ref": "#/$defs/Citation"
+    },
+    "retrieval": {
+      "$ref": "#/$defs/RetrievalResult"
+    },
+    "turn_retrieval": {
+      "$ref": "#/$defs/TurnRetrieval"
+    },
+    "request": {
+      "$ref": "#/$defs/RagRequest"
+    },
+    "search": {
+      "$ref": "#/$defs/SearchRequest"
+    }
+  },
+  "required": [
+    "document",
+    "citation",
+    "retrieval",
+    "turn_retrieval",
+    "request",
+    "search"
+  ],
+  "title": "RagModels",
+  "type": "object"
+}

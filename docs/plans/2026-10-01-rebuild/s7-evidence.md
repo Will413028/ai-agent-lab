@@ -1,0 +1,25 @@
+# S7 程式交付驗收
+
+程式、文件、離線及真本機依賴驗收已完成；Will明確指示先跳過Cloudflare live，因此S0B／N04品質與本人學習練習維持未執行。
+
+| 檢查 | 實際結果 |
+|---|---|
+| Backend | 最終106 unit通過；ruff lint／format，schema與OpenAPI產物一致 |
+| Frontend | 16 parser unit、lint／typecheck／production build通過 |
+| Docker chat | 15 DB integration、全套18 browser通過，含Agent／MCP／RAG／PDF |
+| Docker RAG | 8 integration、2 mutation拒絕並還原、2 browser通過 |
+| Docker terminal | 4 integration通過，包括真執行後取消與deadline清理 |
+| MCP | 官方SDK真stdio 8、schema mutation1、browser1通過 |
+| Agent | 13unit、loop/cancel mutation2、native DB6、browser2通過 |
+| Plan／source | 固定100 tracked paths、baseline＋13負向mutation通過，reference保持clean |
+| Recording | parent lint-rules與check-links通過，daily與project已更新 |
+
+Backend在原make check為103項，人工review與durable-save regression追加後最終106項；不是把不同suite重複加總。Logs為ignored `artifacts/s7-check-final.log`、`s7-check-api-final2.log`、`s7-check-chat-docker-final.log`、`s7-check-rag-docker.log`。S4–S6詳見各stage evidence。
+
+首輪Docker全browser16/18，timeout UI與第一輪chat click各逾時；保留 `s7-check-chat-docker.log`。Trace確認timeout request與約56ms回傳的canonical error正確，但尚未確認browser逾時根因。相同門檻、retries=0的下一次全18通過，沒有提高N01／request／取消期限。這不證明host負載穩定性。
+
+Fresh S7 design-review檢查測試分層、配置／SDK／budget、DB與API ownership、證據retention、人工評分、CI、學習交付：2項，改2／記0／提0／駁回0。B1在清DB前保存完整attempt／events／citations／PDF與hash，cleanup獨立sidecar；C1新增人工review入口，original attempt不可覆寫，逐例理由與reviewer／時間／hash可追查。兩輪唯讀重核收口；缺引用、改PDF、改corpus、failed override、DELETE時磁碟證據存在都有行為回歸。
+
+S3–S7累計12項design-review，改9／記3／提0／駁回0；AGENTS.md补5條現行規則、local移1條session歷史到handoff，共6處指令檔對帳。R01–R13／B01–B06映射見[implementation evidence](implementation-evidence.md)。
+
+Cloudflare live與人工品質評分未跑；DDG live challenge、Commons MCP live dependency_failure保留原事實。本次功能與文件同批提交；遠端CI未跑，未push。沒有把真SDK transport＋fixture稱為真模型品質。

@@ -1,0 +1,608 @@
+{
+  "repository": "https://github.com/liyupi/yu-ai-agent",
+  "revision": "6d4608c58b442d470fffc7a5e0b2aedb0e9478c8",
+  "command": "git -C <absolute-reference-checkout> ls-files -z",
+  "contents_read": false,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "action": "replace",
+      "phase": "S1",
+      "reason": "Fresh Python/Next.js scaffolding, bootstrap and local settings; no Java deployment compatibility required."
+    },
+    {
+      "path": ".gitignore",
+      "action": "replace",
+      "phase": "S1",
+      "reason": "Fresh Python/Next.js scaffolding, bootstrap and local settings; no Java deployment compatibility required."
+    },
+    {
+      "path": ".mvn/wrapper/maven-wrapper.properties",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "Dockerfile",
+      "action": "replace",
+      "phase": "S1",
+      "reason": "Fresh Python/Next.js scaffolding, bootstrap and local settings; no Java deployment compatibility required."
+    },
+    {
+      "path": "README.md",
+      "action": "replace",
+      "phase": "S1",
+      "reason": "Fresh Python/Next.js scaffolding, bootstrap and local settings; no Java deployment compatibility required."
+    },
+    {
+      "path": "mvnw",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "mvnw.cmd",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "pom.xml",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/YuAiAgentApplication.java",
+      "action": "replace",
+      "phase": "S1",
+      "reason": "Fresh Python/Next.js scaffolding, bootstrap and local settings; no Java deployment compatibility required."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/advisor/MyLoggerAdvisor.java",
+      "action": "rewrite",
+      "phase": "S7",
+      "reason": "Redacted call summaries; re-reading is an opt-in experiment."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/advisor/ReReadingAdvisor.java",
+      "action": "rewrite",
+      "phase": "S7",
+      "reason": "Redacted call summaries; re-reading is an opt-in experiment."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/agent/BaseAgent.java",
+      "action": "rewrite",
+      "phase": "S6",
+      "reason": "D6a: composition-based run state and ReAct loop, not Java inheritance."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/agent/ReActAgent.java",
+      "action": "rewrite",
+      "phase": "S6",
+      "reason": "D6a: composition-based run state and ReAct loop, not Java inheritance."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/agent/ToolCallAgent.java",
+      "action": "rewrite",
+      "phase": "S6",
+      "reason": "D6a: composition-based run state and ReAct loop, not Java inheritance."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/agent/YuManus.java",
+      "action": "rewrite",
+      "phase": "S6",
+      "reason": "D6a: composition-based run state and ReAct loop, not Java inheritance."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/agent/model/AgentState.java",
+      "action": "rewrite",
+      "phase": "S6",
+      "reason": "D6a: composition-based run state and ReAct loop, not Java inheritance."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/app/LoveApp.java",
+      "action": "rewrite",
+      "phase": "S2",
+      "reason": "Database-backed conversations and typed reports; RAG/tools/MCP methods connect in S3-S5."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/chatmemory/FileBasedChatMemory.java",
+      "action": "rewrite",
+      "phase": "S2",
+      "reason": "Database-backed conversations and typed reports; RAG/tools/MCP methods connect in S3-S5."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/config/CorsConfig.java",
+      "action": "replace",
+      "phase": "S1",
+      "reason": "Fresh Python/Next.js scaffolding, bootstrap and local settings; no Java deployment compatibility required."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/constant/FileConstant.java",
+      "action": "replace",
+      "phase": "S1",
+      "reason": "Fresh Python/Next.js scaffolding, bootstrap and local settings; no Java deployment compatibility required."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/controller/AiController.java",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "FastAPI endpoints and explicit SSE event contract."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/controller/HealthController.java",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "FastAPI endpoints and explicit SSE event contract."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/demo/invoke/HttpAiInvoke.java",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/demo/invoke/LangChainAiInvoke.java",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/demo/invoke/OllamaAiInvoke.java",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/demo/invoke/SdkAiInvoke.java",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/demo/invoke/SpringAiAiInvoke.java",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/demo/invoke/TestApiKey.java",
+      "action": "replace-without-reading",
+      "phase": "S1",
+      "reason": "Only metadata inspected; define fresh server settings without copying credential payloads."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/demo/rag/MultiQueryExpanderDemo.java",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: standalone multi-query tutorial; retain query rewrite in R07, not each tutorial variant."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/rag/LoveAppContextualQueryAugmenterFactory.java",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/rag/LoveAppDocumentLoader.java",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/rag/LoveAppRagCloudAdvisorConfig.java",
+      "action": "replace",
+      "phase": "S3",
+      "reason": "D1: replace Alibaba cloud knowledge base with local RAG."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/rag/LoveAppRagCustomAdvisorFactory.java",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/rag/LoveAppVectorStoreConfig.java",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/rag/MyKeywordEnricher.java",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/rag/MyTokenTextSplitter.java",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/rag/PgVectorVectorStoreConfig.java",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/rag/QueryRewriter.java",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/tools/FileOperationTool.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/tools/PDFGenerationTool.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/tools/ResourceDownloadTool.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/tools/TerminalOperationTool.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/tools/TerminateTool.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/tools/ToolRegistration.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/tools/WebScrapingTool.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/main/java/com/yupi/yuaiagent/tools/WebSearchTool.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/main/resources/application-prod.yml",
+      "action": "replace-without-reading",
+      "phase": "S1",
+      "reason": "Only metadata inspected; define fresh server settings without copying credential payloads."
+    },
+    {
+      "path": "src/main/resources/application.yml",
+      "action": "replace-without-reading",
+      "phase": "S1",
+      "reason": "Only metadata inspected; define fresh server settings without copying credential payloads."
+    },
+    {
+      "path": "src/main/resources/document/恋爱常见问题和回答 - 单身篇.md",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/resources/document/恋爱常见问题和回答 - 已婚篇.md",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/resources/document/恋爱常见问题和回答 - 恋爱篇.md",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/main/resources/mcp-servers.json",
+      "action": "replace-without-reading",
+      "phase": "S1",
+      "reason": "Only metadata inspected; define fresh server settings without copying credential payloads."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/YuAiAgentApplicationTests.java",
+      "action": "replace",
+      "phase": "S1",
+      "reason": "Fresh Python/Next.js scaffolding, bootstrap and local settings; no Java deployment compatibility required."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/agent/YuManusTest.java",
+      "action": "rewrite",
+      "phase": "S6",
+      "reason": "D6a: composition-based run state and ReAct loop, not Java inheritance."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/app/LoveAppTest.java",
+      "action": "rewrite",
+      "phase": "S2",
+      "reason": "Database-backed conversations and typed reports; RAG/tools/MCP methods connect in S3-S5."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/demo/rag/MultiQueryExpanderDemoTest.java",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: standalone multi-query tutorial; retain query rewrite in R07, not each tutorial variant."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/rag/LoveAppDocumentLoaderTest.java",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/rag/PgVectorVectorStoreConfigTest.java",
+      "action": "rewrite",
+      "phase": "S3",
+      "reason": "D2: PostgreSQL/pgvector; author new equivalent learning corpus instead of copying prose."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/tools/FileOperationToolTest.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/tools/PDFGenerationToolTest.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/tools/ResourceDownloadToolTest.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/tools/TerminalOperationToolTest.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/tools/WebScrapingToolTest.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "src/test/java/com/yupi/yuaiagent/tools/WebSearchToolTest.java",
+      "action": "rewrite",
+      "phase": "S4",
+      "reason": "Typed Python tools and bounded artifacts; terminal policy remains D3."
+    },
+    {
+      "path": "yu-ai-agent-frontend/.dockerignore",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/.gitignore",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/Dockerfile",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/README.md",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/index.html",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/nginx.conf",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/package-lock.json",
+      "action": "omit",
+      "phase": "S1",
+      "reason": "Replace Vue/Vite starter artifacts with Next.js tooling and visuals."
+    },
+    {
+      "path": "yu-ai-agent-frontend/package.json",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/public/vite.svg",
+      "action": "omit",
+      "phase": "S1",
+      "reason": "Replace Vue/Vite starter artifacts with Next.js tooling and visuals."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/App.vue",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/api/index.js",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/assets/vue.svg",
+      "action": "omit",
+      "phase": "S1",
+      "reason": "Replace Vue/Vite starter artifacts with Next.js tooling and visuals."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/components/AiAvatarFallback.vue",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/components/AppFooter.vue",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/components/ChatRoom.vue",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/components/HelloWorld.vue",
+      "action": "omit",
+      "phase": "S1",
+      "reason": "Replace Vue/Vite starter artifacts with Next.js tooling and visuals."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/main.js",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/router/index.js",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/style.css",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/views/Home.vue",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/views/LoveMaster.vue",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/src/views/SuperAgent.vue",
+      "action": "rewrite",
+      "phase": "S1",
+      "reason": "Next.js navigation, chat UI and fetch-based SSE; feature UI expands in S2-S6."
+    },
+    {
+      "path": "yu-ai-agent-frontend/vite.config.js",
+      "action": "omit",
+      "phase": "S1",
+      "reason": "Replace Vue/Vite starter artifacts with Next.js tooling and visuals."
+    },
+    {
+      "path": "yu-image-search-mcp-server/.gitattributes",
+      "action": "rewrite",
+      "phase": "S5",
+      "reason": "Python MCP server/client; deployment settings redefined, image provider remains D4."
+    },
+    {
+      "path": "yu-image-search-mcp-server/.gitignore",
+      "action": "rewrite",
+      "phase": "S5",
+      "reason": "Python MCP server/client; deployment settings redefined, image provider remains D4."
+    },
+    {
+      "path": "yu-image-search-mcp-server/.mvn/wrapper/maven-wrapper.properties",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "yu-image-search-mcp-server/mvnw",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "yu-image-search-mcp-server/mvnw.cmd",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "yu-image-search-mcp-server/pom.xml",
+      "action": "omit",
+      "phase": "S7",
+      "reason": "D1: Java/SDK/Ollama tutorial variants and Java tooling are outside functional parity."
+    },
+    {
+      "path": "yu-image-search-mcp-server/src/main/java/com/yupi/yuimagesearchmcpserver/YuImageSearchMcpServerApplication.java",
+      "action": "rewrite",
+      "phase": "S5",
+      "reason": "Python MCP server/client; deployment settings redefined, image provider remains D4."
+    },
+    {
+      "path": "yu-image-search-mcp-server/src/main/java/com/yupi/yuimagesearchmcpserver/tools/ImageSearchTool.java",
+      "action": "rewrite",
+      "phase": "S5",
+      "reason": "Python MCP server/client; deployment settings redefined, image provider remains D4."
+    },
+    {
+      "path": "yu-image-search-mcp-server/src/main/resources/application-sse.yml",
+      "action": "replace-without-reading",
+      "phase": "S1",
+      "reason": "Only metadata inspected; define fresh server settings without copying credential payloads."
+    },
+    {
+      "path": "yu-image-search-mcp-server/src/main/resources/application-stdio.yml",
+      "action": "replace-without-reading",
+      "phase": "S1",
+      "reason": "Only metadata inspected; define fresh server settings without copying credential payloads."
+    },
+    {
+      "path": "yu-image-search-mcp-server/src/main/resources/application.yml",
+      "action": "replace-without-reading",
+      "phase": "S1",
+      "reason": "Only metadata inspected; define fresh server settings without copying credential payloads."
+    },
+    {
+      "path": "yu-image-search-mcp-server/src/test/java/com/yupi/yuimagesearchmcpserver/YuImageSearchMcpServerApplicationTests.java",
+      "action": "rewrite",
+      "phase": "S7",
+      "reason": "Rebuild behavioral coverage with deterministic tests; opt-in live eval remains separate."
+    },
+    {
+      "path": "yu-image-search-mcp-server/src/test/java/com/yupi/yuimagesearchmcpserver/tools/ImageSearchToolTest.java",
+      "action": "rewrite",
+      "phase": "S7",
+      "reason": "Rebuild behavioral coverage with deterministic tests; opt-in live eval remains separate."
+    }
+  ]
+}

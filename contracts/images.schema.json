@@ -1,0 +1,97 @@
+{
+  "$defs": {
+    "ImageResult": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "source_url": {
+          "title": "Source Url",
+          "type": "string"
+        },
+        "artist": {
+          "title": "Artist",
+          "type": "string"
+        },
+        "license": {
+          "title": "License",
+          "type": "string"
+        },
+        "license_url": {
+          "title": "License Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "url",
+        "source_url",
+        "artist",
+        "license",
+        "license_url"
+      ],
+      "title": "ImageResult",
+      "type": "object"
+    },
+    "ImageSearchRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "query": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Query",
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "title": "ImageSearchRequest",
+      "type": "object"
+    },
+    "ImageSearchResult": {
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "images": {
+          "items": {
+            "$ref": "#/$defs/ImageResult"
+          },
+          "maxItems": 5,
+          "title": "Images",
+          "type": "array"
+        }
+      },
+      "required": [
+        "provider",
+        "images"
+      ],
+      "title": "ImageSearchResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "result": {
+      "$ref": "#/$defs/ImageSearchResult"
+    },
+    "request": {
+      "$ref": "#/$defs/ImageSearchRequest"
+    }
+  },
+  "required": [
+    "result",
+    "request"
+  ],
+  "title": "ImageModels",
+  "type": "object"
+}
