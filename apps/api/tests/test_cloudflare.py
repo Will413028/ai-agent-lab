@@ -195,7 +195,7 @@ async def test_report_without_exactly_one_valid_call_is_invalid_report(message):
 
 
 @pytest.mark.parametrize("value,sent", [(None, False), ("on", None), ("off", False)])
-async def test_thinking_switch_applies_to_glm_and_stream_uses_llama(value, sent):
+async def test_thinking_switch_applies_to_glm_and_stream_uses_gemma(value, sent):
     environment = {"CLOUDFLARE_ACCOUNT_ID": "0" * 32, "CLOUDFLARE_API_TOKEN": "fixture-placeholder"}
     if value is not None:
         environment["AGENT_LAB_THINKING"] = value
@@ -227,9 +227,10 @@ async def test_thinking_switch_applies_to_glm_and_stream_uses_llama(value, sent)
     completion, stream = bodies
     assert completion["model"] == "@cf/zai-org/glm-4.7-flash"
     assert completion.get("chat_template_kwargs", {}).get("enable_thinking") == sent
-    # Chat and RAG answers stream from llama: GLM fabricated venues and prices in live holdout.
-    assert stream["model"] == "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
-    assert "chat_template_kwargs" not in stream
+    # Chat and RAG answers stream from Gemma with thinking always off, independent of GLM.
+    assert stream["model"] == "@cf/google/gemma-4-26b-a4b-it"
+    assert stream["chat_template_kwargs"] == {"enable_thinking": False}
+    assert stream["max_completion_tokens"] == 4096
 
 
 def test_unknown_thinking_value_fails_fast():
