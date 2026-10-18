@@ -170,7 +170,7 @@ export default function Page() {
       <header className="topbar"><span>戀愛諮詢</span><div className="header-actions"><button className="new-chat" disabled={busy || loading} onClick={() => void select(null)}>新對話 ＋</button><span className="offline"><i /> {modelMode === "cloudflare" ? "Cloudflare" : "離線示範"}</span></div></header>
       <div className="content">
         <div className="intro"><div className="eyebrow">LISTEN · REFLECT · CONNECT</div><h1>讓對話，有下一步。</h1><p>先釐清感受，再練習一個小小的溝通行動。</p></div>
-        <div className="demo-note">{modelMode === "cloudflare" ? "使用 Cloudflare 回覆。" : "使用離線示範回覆。"}對話保存在本機資料庫，直到你刪除；模型只讀最近完整回合。</div>
+        <div className="demo-note">{modelMode === "cloudflare" ? "使用 Cloudflare 回覆；模型沒有即時資料，可能寫出不存在的店家、價格或路線，請自行查證。" : "使用離線示範回覆。"}對話保存在本機資料庫，直到你刪除；模型只讀最近完整回合。</div>
         <div className="conversation-controls"><label htmlFor="conversation">選擇對話</label><select id="conversation" value={active ?? ""} onChange={event => void select(event.target.value || null)} disabled={busy || loading}><option value="">新增對話</option>{list.map(row => <option key={row.id} value={row.id}>{row.title}</option>)}</select><button className="text-button danger" disabled={!active || busy || loading} onClick={() => void remove()}>刪除對話</button></div>
         <h2 className="conversation-title">{title}</h2>
         <div ref={transcript} className="conversation" aria-label="對話紀錄" aria-busy={busy || loading} onScroll={event => { const node = event.currentTarget; followReply.current = node.scrollHeight - node.clientHeight - node.scrollTop < 48; }}>
