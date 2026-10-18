@@ -1,6 +1,6 @@
-# Cloudflare provider spike：依使用者指示延後
+# Cloudflare provider spike：P03 未通過，待 D6b
 
-核對日期：2026-10-01。所有 live cases 目前都是 **未執行**。Will 明確指示「先跳過，先寫程式」，因此不等待配置、不執行 live。本附件與 evidence 不包含 token；opt-in runner 已實作，日後由 server 直接消費本機個人設定。
+核對日期：2026-10-01；live 執行：2026-10-18（Will 授權建立 Workers AI Read＋Write token 並執行）。本附件與 evidence 不包含 token；ignored evidence `artifacts/live-spike-20261018T023944467132.json`、`artifacts/live-spike-p03-retry-20261018T*.json`。10 次 request 預算已用完（spike 9＋P03 單獨重試 1）。
 
 ## 接入方式
 
@@ -14,12 +14,12 @@ base URL 格式為 `https://api.cloudflare.com/client/v4/accounts/{account_id}/a
 
 | ID | Request schema／輸入 | 成功判準 | 狀態 |
 |---|---|---|---|
-| P01 | messages：繁中問候；stream=false | 正常完成、content 非空；記語言與 response shape | 未執行 |
-| P02 | messages：繁中短句；stream=true | 解析完整 SSE，含跨 chunk UTF-8；正常末尾，不丟失文字 | 未執行 |
-| P03 | response_format：json_schema；title string／suggestions string[] | JSON 解析與 schema validation 通過；不把支援 json_object 當 json_schema | 未執行 |
-| P04 | tools：lookup_city(city:string)；stub tool 不做網路 | 模型 tool name／arguments 合法；記 call ID，回 tool message 後模型答覆 | 未執行 |
-| P05 | tools：lookup_city、format_plan；多輪 stub 結果 | 兩步工具各保留 call ID；新 evidence 影響下一步；不能漏 assistant tool call message | 未執行 |
-| P06 | embeddings input：兩段人工中英測資 | vectors 數量與輸入一致、值有限、維度一致；記實際 dimension，不預設 | 未執行 |
+| P01 | messages：繁中問候；stream=false | 正常完成、content 非空；記語言與 response shape | passed：31.8s，usage 19 in／905 out（短問候卻 905 out，推斷含 reasoning tokens） |
+| P02 | messages：繁中短句；stream=true | 解析完整 SSE，含跨 chunk UTF-8；正常末尾，不丟失文字 | passed：9.7s，TTFT 9.5s，usage unknown |
+| P03 | response_format：json_schema；title string／suggestions string[] | JSON 解析與 schema validation 通過；不把支援 json_object 當 json_schema | **failed**：`provider_timeout` 兩次（45.7s、54.9s，app HTTP timeout 45s）；官方 JSON mode 支援清單未列 GLM-4.7-flash（2026-10-18 重查） |
+| P04 | tools：lookup_city(city:string)；stub tool 不做網路 | 模型 tool name／arguments 合法；記 call ID，回 tool message 後模型答覆 | passed：14.4s，1 call，usage 259／204 |
+| P05 | tools：lookup_city、format_plan；多輪 stub 結果 | 兩步工具各保留 call ID；新 evidence 影響下一步；不能漏 assistant tool call message | passed：10.7s，2 calls，usage 448／176 |
+| P06 | embeddings input：兩段人工中英測資 | vectors 數量與輸入一致、值有限、維度一致；記實際 dimension，不預設 | passed：0.5s，dimension 1024 |
 
 P01–P06 是能力診斷資料，不是 S7 的品質 holdout。最多 10 次模型／embedding requests；遇 quota failure 即停，不自動啟用 paid fallback。不為達成工具順序無限重試；無法觸發目標行為時記 capability failure 或 inconclusive，保留實際呼叫次數。
 
@@ -33,7 +33,7 @@ S1 可以依可控 fake provider 先建立 transport，不等此矩陣；S2–S6
 
 原圖片工具使用 Pexels；[官方文件](https://www.pexels.com/api/documentation/) 表示 API 免費、需要 account/key，預設 200 requests/hour、20,000/month，且要求 attribution。已核對文件，未登入、申請 key 或發送 live request。
 
-D4 依委託已採 DuckDuckGo non-JS HTML 搜尋與 Wikimedia Commons 圖片 API，免 key 並保留 attribution。SearchAPI／Pexels 未接入。DDG live 曾遇 challenge，Commons HTTP fetch 成功，但 MCP live 任務未通過；真 stdio＋fixture 的協定驗收另有 evidence，不能混作 live 成功。
+D4 依委託已採 DuckDuckGo non-JS HTML 搜尋與 Wikimedia Commons 圖片 API，免 key 並保留 attribution。SearchAPI／Pexels 未接入。DDG live 曾遇 challenge，2026-10-18 3/3 成功；Commons MCP live 2026-10-18 修正縮圖 host 後通過；真 stdio＋fixture 的協定驗收另有 evidence，不能混作 live 成功。
 
 ## 可重跑入口
 
