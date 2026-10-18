@@ -2,7 +2,7 @@
 
 ## 現況
 
-單人Next.js＋FastAPI全功能程式、本機驗收、文件與design-review／recording已完成。唯一進度是[主計畫](../2026-10-01-rebuild.md)。Cloudflare live依Will「先跳過，先寫程式」延後；本人messages／max_steps練習未操作，不代填完成。功能、計畫與evidence同批提交；以 `git log -1 --stat` 核對當前commit。未push，遠端CI未跑。
+單人Next.js＋FastAPI全功能程式、本機驗收、文件與design-review／recording已完成。唯一進度是[主計畫](../2026-10-01-rebuild.md)。Cloudflare live依Will「先跳過，先寫程式」延後；本人messages／max_steps練習未操作，不代填完成。功能、計畫與evidence同批提交；以 `git log -1 --stat` 核對當前commit。已push；遠端CI `Offline checks` 於 2026-10-11 對 `b1c3b28`、`7cb2e01` 通過。
 
 ## 可重跑驗收
 
@@ -28,4 +28,4 @@ Docker是共用服務，只操作當下確認owned資源。S3曾協調19個容�
 
 使用者日後決定啟用live時，`make live-spike`驗P01–P06、`make live-holdout`用owned test DB與臨時API驗6種固定情境；`make review-holdout`保存人工rubric判定。原attempt／PDF／citations先保存再清DB，review sidecar不改原結果。沒有把此流程列成等待權限的blocking work。
 
-DDG live曾challenge；Commons HTTP成功但MCP live尚未成功。GLM/BGE個人帳號能力未驗，D6b僅在實際不相容時重評，不靜默fallback。遠端CI只有workflow，尚未執行。
+DDG live曾challenge；Commons HTTP成功但MCP live尚未成功。GLM/BGE個人帳號能力未驗，D6b僅在實際不相容時重評，不靜默fallback。遠端CI只跑offline checks，不含live。

@@ -29,4 +29,4 @@
 
 N01：首事件／取消期限已測；N02：reasoning排除／usage缺省已測；N03：429／quota／timeout與UI已測；N04：能力spike與6項frozen holdout runner已實作，Will指示延後live，尚未判定品質通過。
 
-學習交付：[learning](../../learning.md)、[Agent](../../agent.md)、[tools/MCP](../../tools.md)。Will的messages圖與max_steps練習尚未操作，保留在主計畫S7。功能與本文件同批提交，實際revision用 `git log -1` 核對；未push，遠端CI尚未執行。
+學習交付：[learning](../../learning.md)、[Agent](../../agent.md)、[tools/MCP](../../tools.md)。Will的messages圖與max_steps練習尚未操作，保留在主計畫S7。功能與本文件同批提交，實際revision用 `git log -1` 核對；已push；遠端CI `Offline checks` 於 2026-10-11 對 `b1c3b28`、`7cb2e01` 通過。
