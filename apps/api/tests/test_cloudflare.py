@@ -194,7 +194,7 @@ async def test_report_without_exactly_one_valid_call_is_invalid_report(message):
     )
 
 
-@pytest.mark.parametrize("value,sent", [(None, None), ("on", None), ("off", False)])
+@pytest.mark.parametrize("value,sent", [(None, False), ("on", None), ("off", False)])
 async def test_thinking_switch_is_sent_to_completion_and_stream(value, sent):
     environment = {"CLOUDFLARE_ACCOUNT_ID": "0" * 32, "CLOUDFLARE_API_TOKEN": "fixture-placeholder"}
     if value is not None:
