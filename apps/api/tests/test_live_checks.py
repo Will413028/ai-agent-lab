@@ -68,7 +68,7 @@ def test_holdout_is_separate_from_spike_and_covers_all_required_kinds():
         "images",
         "no_tools",
     }
-    assert len({case["id"] for case in data["cases"]}) == 6
+    assert len({case["id"] for case in data["cases"]}) == 8
     assert all(case["rubric"] for case in data["cases"])
 
 
@@ -79,7 +79,7 @@ def test_human_review_keeps_attempt_and_artifact_provenance_and_cannot_override_
     corpus = CORPUS.read_bytes()
     content = b"%PDF-1.7 fixture"
     (tmp_path / "H04.pdf").write_bytes(content)
-    rows = [{"case": f"H0{i}", "status": "passed"} for i in range(1, 7)]
+    rows = [{"case": case["id"], "status": "passed"} for case in json.loads(corpus)["cases"]]
     rows[3].update(
         status="needs_review",
         allowed_run_events=[{"summary": "search source"}],
@@ -117,7 +117,7 @@ def test_review_rejects_changed_corpus_and_missing_retrieval_evidence(tmp_path):
     from review_holdout import adjudicate
 
     corpus = CORPUS.read_bytes()
-    rows = [{"case": f"H0{i}", "status": "passed"} for i in range(1, 7)]
+    rows = [{"case": case["id"], "status": "passed"} for case in json.loads(corpus)["cases"]]
     rows[2].update(status="needs_review", allowed_answers=["test"], source="test")
     attempt = {
         "attempt_id": "test",

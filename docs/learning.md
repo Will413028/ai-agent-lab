@@ -49,4 +49,4 @@ make -C /absolute/path/to/ai-agent-lab review-holdout \
   REVIEW=/absolute/path/to/review.json REVIEWER=Will
 ```
 
-程式拒絕變更corpus、遺失／被改動PDF、缺引用或漏評；failed/not_run不能被人工覆寫成通過。另存review sidecar，包含reviewer、reviewed_at、原attempt SHA256、corpus SHA256與逐例理由。全部6例通過才會得到該attempt的passed結論；跨重跑彙整時也須同一corpus hash、每例指向一份有效review，保留全部失敗。這只代表N04功能smoke，不代表品質或可靠率。現在未跑live，沒有任何真實評分紀錄。
+程式拒絕變更corpus、遺失／被改動PDF、缺引用或漏評；failed/not_run不能被人工覆寫成通過。另存review sidecar，包含reviewer、reviewed_at、原attempt SHA256、corpus SHA256與逐例理由。全部8例通過才會得到該attempt的passed結論；跨重跑彙整時也須同一corpus hash、每例指向一份有效review，保留全部失敗。這只代表N04功能smoke，不代表品質或可靠率。現在未跑live，沒有任何真實評分紀錄。
