@@ -33,3 +33,5 @@ Cloudflare live與人工品質評分未跑；DDG live challenge、Commons MCP li
 | `live-holdout-20261018T033822042093` | off | needs_review | needs_review | needs_review | needs_review | passed | passed |
 
 reasoning 開時聊天失敗的根因已實測：H01 第一問單獨串流，reasoning 用完 `max_completion_tokens` 2048，content 0 字、`finish_reason=length`、53.3s。第一輪原本把例外吞掉，`live_holdout.py` 已補 `failure_detail`（只記例外類型、HTTP status、app sanitized code）。needs_review 待 Will 依 rubric 評分；機械通過不代表品質。
+
+評分（Will 2026-10-18 委託 AI 代評，reviewer 記為 `Claude (AI, delegated by Will 2026-10-18)`，不是本人評分）：off attempt H01 failed（第二輪捏造店名、價格、站名與公車路線，並殘留「台南」），H02／H03／H04 passed，結論 incomplete；on attempt H02 failed（建議假日共同時間，與「只有週二晚上有空」衝突），H04 passed，結論 incomplete。review sidecar 存於各 attempt 目錄，原 attempt 未改。之後 Will 決定 reasoning 預設 off。

@@ -26,7 +26,7 @@ class CloudflareSettings:
     token: str = field(repr=False)
     chat_model: str = CHAT_MODEL
     embedding_model: str = EMBEDDING_MODEL
-    thinking: bool = True
+    thinking: bool = False
 
     @classmethod
     def from_environment(cls, environment=None):
@@ -41,7 +41,9 @@ class CloudflareSettings:
         embedding = environment.get("AGENT_LAB_EMBEDDING_MODEL", EMBEDDING_MODEL)
         if chat != CHAT_MODEL or embedding != EMBEDDING_MODEL:
             raise RuntimeError("Model is outside the verified free-model allowlist")
-        thinking = environment.get("AGENT_LAB_THINKING", "on")
+        # Off by default: with reasoning on, GLM spent the whole 2048-token budget and
+        # returned no content in live holdout (2026-10-18, Will chose off).
+        thinking = environment.get("AGENT_LAB_THINKING", "off")
         if thinking not in ("on", "off"):
             raise RuntimeError("AGENT_LAB_THINKING must be on or off")
         return cls(account, token, chat, embedding, thinking == "on")

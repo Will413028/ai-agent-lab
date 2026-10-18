@@ -37,7 +37,7 @@ Will 同意後執行 3 次 request（上限 4），用 H02 長度的固定對話
 | A-thinking-off | 同上＋`chat_template_kwargs.enable_thinking=false` | 1 call，驗證通過；9.0s；usage 539／273；1 項建議寫「二、四、六晚上」，違反「只有週二晚上」 |
 | chat-thinking-off | P01 問候＋`enable_thinking=false` | stop；1.1s；usage 19／10（P01 開 reasoning：31.8s、905） |
 
-`enable_thinking=false` 在 Workers AI 未見文件記載，但實測生效。每種設定只有 1 例，不能據此判品質。report 已改用 tool output；reasoning 是否關閉未決，thinking-on 的 58.6s 接近 app 60s 上限。
+`enable_thinking=false` 在 Workers AI 未見文件記載，但實測生效。每種設定只有 1 例，不能據此判品質。report 已改用 tool output。之後 live holdout 實測 reasoning on 會吃光 2048 tokens、聊天回空，Will 決定預設 off（見 S7 evidence）。
 
 ## 外部工具費用盤點（D4 已決）
 

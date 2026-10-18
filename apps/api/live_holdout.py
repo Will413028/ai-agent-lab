@@ -250,7 +250,7 @@ async def run(base_url):
         output = {
             "attempt_id": attempt_id,
             "corpus_sha256": hashlib.sha256(CORPUS.read_bytes()).hexdigest(),
-            "thinking": os.environ.get("AGENT_LAB_THINKING", "on"),
+            "thinking": os.environ.get("AGENT_LAB_THINKING", "off"),
             "cases": rows,
             "note": "needs_review 必須依 rubric 逐例判讀；單次通過不代表品質或可靠率。",
         }
