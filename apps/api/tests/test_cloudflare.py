@@ -192,3 +192,48 @@ async def test_report_without_exactly_one_valid_call_is_invalid_report(message):
     assert (
         await provider(lambda _: report_response(message)).report(build_context([], "hi")) is None
     )
+
+
+@pytest.mark.parametrize("value,sent", [(None, None), ("on", None), ("off", False)])
+async def test_thinking_switch_is_sent_to_completion_and_stream(value, sent):
+    environment = {"CLOUDFLARE_ACCOUNT_ID": "0" * 32, "CLOUDFLARE_API_TOKEN": "fixture-placeholder"}
+    if value is not None:
+        environment["AGENT_LAB_THINKING"] = value
+    bodies = []
+
+    def handler(request):
+        payload = json.loads(request.content)
+        bodies.append(payload)
+        if payload.get("stream"):
+            return httpx.Response(
+                200,
+                text='data: {"choices":[{"delta":{"content":"好"},"finish_reason":"stop"}]}\n\n'
+                "data: [DONE]\n\n",
+            )
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {"finish_reason": "stop", "message": {"role": "assistant", "content": "好"}}
+                ]
+            },
+        )
+
+    model = CloudflareProvider(
+        CloudflareSettings.from_environment(environment), transport=httpx.MockTransport(handler)
+    )
+    await model.completion([{"role": "user", "content": "hi"}])
+    _ = [item async for item in model.stream(build_context([], "hi"), "normal")]
+    for body in bodies:
+        assert body.get("chat_template_kwargs", {}).get("enable_thinking") == sent
+
+
+def test_unknown_thinking_value_fails_fast():
+    with pytest.raises(RuntimeError):
+        CloudflareSettings.from_environment(
+            {
+                "CLOUDFLARE_ACCOUNT_ID": "0" * 32,
+                "CLOUDFLARE_API_TOKEN": "fixture-placeholder",
+                "AGENT_LAB_THINKING": "maybe",
+            }
+        )
