@@ -8,6 +8,7 @@ from pypdf import PdfReader
 
 from agent_lab_api.artifacts import ArtifactStore, ToolFailure
 from agent_lab_api.network import PinnedResolver, public_addresses, public_ip
+from agent_lab_api.pdf_tool import generate_pdf
 from agent_lab_api.terminal import output_archive
 from agent_lab_api.tool_models import ToolCall
 from agent_lab_api.tools import ToolRegistry, tool_message
@@ -208,3 +209,13 @@ def test_container_archive_never_extracts_unsafe_files(tmp_path, name, kind):
     with pytest.raises(ToolFailure):
         output_archive(store, workspace, content.getvalue())
     assert store.list(workspace) == []
+
+
+def test_pdf_converts_simplified_text_to_taiwan_traditional():
+    # The bundled NotoSansTC lacks some Simplified glyphs (协、档 vanished in live holdout).
+    text = "".join(
+        page.extract_text()
+        for page in PdfReader(io.BytesIO(generate_pdf("# 协程与任务\n官方文档"))).pages
+    )
+    assert "協程與任務" in text and "官方文件" in text
+    assert "协" not in text and "档" not in text
