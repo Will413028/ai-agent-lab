@@ -16,8 +16,13 @@ from .embeddings import EmbeddingFailure, validate_vectors
 from .providers import ProviderFailure
 
 CHAT_MODEL = "@cf/zai-org/glm-4.7-flash"
-# Streams chat and RAG answers: GLM fabricated venues and prices in live holdout (2026-10-18).
-STREAM_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+# Streams chat and RAG answers: GLM fabricated venues and prices in live holdout; Will chose
+# Gemma over llama after the 2026-10-18 comparison. Thinking off: on, it truncated at 2048.
+STREAM_MODEL = "@cf/google/gemma-4-26b-a4b-it"
+STREAM_OPTIONS = {
+    "max_completion_tokens": 4096,
+    "extra_body": {"chat_template_kwargs": {"enable_thinking": False}},
+}
 EMBEDDING_MODEL = "@cf/baai/bge-m3"
 MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 
@@ -170,7 +175,7 @@ class CloudflareProvider:
                     model=self.settings.stream_model,
                     messages=[m.model_dump() for m in messages],
                     stream=True,
-                    max_completion_tokens=2048,
+                    **STREAM_OPTIONS,
                 )
                 async with stream:
                     finished = False
