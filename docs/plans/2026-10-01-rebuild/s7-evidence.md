@@ -35,3 +35,5 @@ Cloudflare live與人工品質評分未跑；DDG live challenge、Commons MCP li
 reasoning 開時聊天失敗的根因已實測：H01 第一問單獨串流，reasoning 用完 `max_completion_tokens` 2048，content 0 字、`finish_reason=length`、53.3s。第一輪原本把例外吞掉，`live_holdout.py` 已補 `failure_detail`（只記例外類型、HTTP status、app sanitized code）。needs_review 待 Will 依 rubric 評分；機械通過不代表品質。
 
 評分（Will 2026-10-18 委託 AI 代評，reviewer 記為 `Claude (AI, delegated by Will 2026-10-18)`，不是本人評分）：off attempt H01 failed（第二輪捏造店名、價格、站名與公車路線，並殘留「台南」），H02／H03／H04 passed，結論 incomplete；on attempt H02 failed（建議假日共同時間，與「只有週二晚上有空」衝突），H04 passed，結論 incomplete。review sidecar 存於各 attempt 目錄，原 attempt 未改。之後 Will 決定 reasoning 預設 off。
+
+H01 捏造店價修正（2026-10-18，Will 指示）：`context.py` SYSTEM_PROMPT 加入「只依最新更正條件」與「不寫店家、景點、場館、車站、路線的專有名稱與具體價格，只給類型、預算比例與查證關鍵字」。先用不在 corpus 的開發案例（高雄→台中、全素、500元）驗證：舊 prompt 重現捏造店名、公車號碼與價格；第一版仍捏造一間文創館；第二版未見專有店名，但仍提到一次已更正的 1000 元（各 1 樣本，`artifacts/h01-dev-*.json`）。**H01 已被這次修正參考過，不再是 blind holdout**；要宣稱 H01 類能力需新增凍結案例。重跑 `live-holdout-20261018T040654347730`（thinking off）：AI 代評 H01 passed（邊緣：冰淇淋甜點店、疑似專有名稱一處）、H02 failed（週五／週日安排與只有週二衝突，假設有子女）、H03／H04 passed、H05／H06 機械 passed，結論 incomplete。H02 三次 attempt 中兩次違反時間條件。
