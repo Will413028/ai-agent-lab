@@ -120,3 +120,36 @@ def test_commons_parses_attribution_and_filters_non_images():
     assert commons_images({"batchcomplete": ""}).images == []
     with pytest.raises(ToolFailure, match="dependency_failure"):
         commons_images({"error": {"code": "blocked"}})
+
+
+def test_commons_accepts_thumbnail_host_and_rejects_other_hosts():
+    def page(thumburl):
+        return {
+            "query": {
+                "pages": {
+                    "1": {
+                        "title": "File:coffee.jpg",
+                        "imageinfo": [
+                            {
+                                "mime": "image/jpeg",
+                                "thumburl": thumburl,
+                                "descriptionurl": "https://commons.wikimedia.org/wiki/File:coffee.jpg",
+                                "extmetadata": {
+                                    "Artist": {"value": "Photographer"},
+                                    "LicenseShortName": {"value": "CC0"},
+                                    "LicenseUrl": {
+                                        "value": "https://creativecommons.org/publicdomain/zero/1.0/"
+                                    },
+                                },
+                            }
+                        ],
+                    }
+                }
+            }
+        }
+
+    # Commons API currently returns thumbnails from thumb.wikimedia.org.
+    thumb = "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/coffee.jpg/640px-coffee.jpg"
+    assert commons_images(page(thumb)).images[0].url == thumb
+    with pytest.raises(ToolFailure, match="dependency_failure"):
+        commons_images(page("https://example.com/coffee.jpg"))
