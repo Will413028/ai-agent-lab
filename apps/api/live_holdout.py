@@ -77,7 +77,7 @@ async def run(base_url):
             if events and events[-1].get("code") in ("rate_limited", "quota_exhausted"):
                 stopped = True
             if not events or events[-1].get("type") != "done":
-                raise ValueError("chat_not_completed")
+                raise ValueError("chat_not_completed", events[-1].get("code") if events else None)
             return "".join(event.get("text", "") for event in events), events[-1]
 
         for case in corpus["cases"]:
@@ -228,8 +228,22 @@ async def run(base_url):
                                 artifact_sha256=hashlib.sha256(content).hexdigest(),
                             )
                         row["provider_usage"] = final.usage.model_dump()
-            except Exception:
-                row.update(status="failed", failure_class="functional_check_failed")
+            except Exception as failure:
+                # Only the exception type, HTTP status and the app's sanitized code are kept.
+                detail = {"type": type(failure).__name__}
+                if isinstance(failure, httpx.HTTPStatusError):
+                    detail["http_status"] = failure.response.status_code
+                    try:
+                        detail["code"] = failure.response.json()["detail"]["code"]
+                    except (ValueError, KeyError, TypeError):
+                        pass
+                elif isinstance(failure, ValueError) and failure.args[:1] == (
+                    "chat_not_completed",
+                ):
+                    detail["code"] = failure.args[1] or "chat_not_completed"
+                row.update(
+                    status="failed", failure_class="functional_check_failed", failure_detail=detail
+                )
             row["duration_ms"] = round((time.monotonic() - before) * 1000)
             rows.append(row)
             print(case["id"], row["status"], flush=True)
