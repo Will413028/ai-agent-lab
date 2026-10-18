@@ -179,6 +179,9 @@ class CloudflareProvider:
                             continue
                         choice = chunk.choices[0]
                         content = choice.delta.content
+                        # Workers AI llama streams numeric tokens as JSON numbers.
+                        if isinstance(content, (int, float)) and not isinstance(content, bool):
+                            content = str(content)
                         if content is not None:
                             if not isinstance(content, str):
                                 raise ValueError
