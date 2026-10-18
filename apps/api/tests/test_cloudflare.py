@@ -252,3 +252,22 @@ def test_unknown_stream_model_fails_fast():
                 "AGENT_LAB_STREAM_MODEL": "@cf/zai-org/glm-4.7-flash",
             }
         )
+
+
+async def test_stream_keeps_numeric_content_tokens():
+    # Workers AI llama streams numeric tokens as JSON numbers, e.g. "content": 44.
+    text = (
+        'data: {"choices":[{"delta":{"content":"預算"},"finish_reason":null}]}\n\n'
+        'data: {"choices":[{"delta":{"content":600},"finish_reason":null}]}\n\n'
+        'data: {"choices":[{"delta":{"content":"元"},"finish_reason":null}]}\n\n'
+        'data: {"choices":[{"delta":{},"finish_reason":"stop"}]}\n\n'
+        'data: {"choices":[{"delta":{},"finish_reason":"stop"}]}\n\n'
+        "data: [DONE]\n\n"
+    )
+    pieces = [
+        item
+        async for item in provider(lambda _: httpx.Response(200, text=text)).stream(
+            build_context([], "hi"), "normal"
+        )
+    ]
+    assert "".join(pieces) == "預算600元"
