@@ -197,19 +197,29 @@ class CloudflareProvider:
                     ),
                 }
             ],
-            response_format={
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "love_report",
-                    "strict": True,
-                    "schema": LoveReport.model_json_schema(),
-                },
-            },
+            # GLM-4.7-flash is not on the Workers AI JSON mode list and json_schema timed out
+            # live (D6b, 2026-10-18); one forced tool call carries the schema instead.
+            tools=[
+                {
+                    "type": "function",
+                    "function": {
+                        "name": "submit_report",
+                        "description": "提交繁體中文報告。",
+                        "parameters": LoveReport.model_json_schema(),
+                    },
+                }
+            ],
+            tool_choice="required",
+            parallel_tool_calls=False,
         )
+        calls = output.get("tool_calls") or []
+        if len(calls) != 1 or calls[0]["function"]["name"] != "submit_report":
+            # None fails LoveReport validation in the endpoint: 502 invalid_report.
+            return None
         try:
-            return json.loads(output["content"])
-        except (ValueError, KeyError, TypeError):
-            raise ProviderFailure("provider_failure", "模型報告格式不正確。", False) from None
+            return json.loads(calls[0]["function"]["arguments"])
+        except (ValueError, TypeError):
+            return None
 
     async def rewrite(self, messages: list[PromptMessage]) -> str:
         output = await self.completion(

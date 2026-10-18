@@ -27,6 +27,18 @@ P01–P06 是能力診斷資料，不是 S7 的品質 holdout。最多 10 次模
 
 S1 可以依可控 fake provider 先建立 transport，不等此矩陣；S2–S6 的 live 驗收需本矩陣通過或 D6b 的明確替代決定。
 
+## D6b bounded probe（2026-10-18）
+
+Will 同意後執行 3 次 request（上限 4），用 H02 長度的固定對話＋report 指令，evidence `artifacts/d6b-probe-20261018T025722.json`：
+
+| Case | 設定 | 結果 |
+|---|---|---|
+| A-thinking-on | `tools=[submit_report]`、`tool_choice=required`、`parallel_tool_calls=false` | 1 call，LoveReport 驗證通過；58.6s；usage 539／497 |
+| A-thinking-off | 同上＋`chat_template_kwargs.enable_thinking=false` | 1 call，驗證通過；9.0s；usage 539／273；1 項建議寫「二、四、六晚上」，違反「只有週二晚上」 |
+| chat-thinking-off | P01 問候＋`enable_thinking=false` | stop；1.1s；usage 19／10（P01 開 reasoning：31.8s、905） |
+
+`enable_thinking=false` 在 Workers AI 未見文件記載，但實測生效。每種設定只有 1 例，不能據此判品質。report 已改用 tool output；reasoning 是否關閉未決，thinking-on 的 58.6s 接近 app 60s 上限。
+
 ## 外部工具費用盤點（D4 已決）
 
 原搜尋使用 SearchAPI 的 baidu engine；[官方首頁](https://www.searchapi.io/) 提供 100 次 free requests、無需信用卡，尚無證據可把它當永久免費月額度。與免 key 的公開網頁搜尋相比，API 回傳較規律，但試用用完需停用或換方案。
