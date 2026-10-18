@@ -13,6 +13,7 @@ from agent_lab_api.agent_runtime import assistant_message
 from agent_lab_api.cloudflare import (
     CHAT_MODEL,
     EMBEDDING_MODEL,
+    STREAM_MODEL,
     CloudflareEmbedder,
     CloudflareProvider,
     CloudflareSettings,
@@ -181,7 +182,7 @@ async def spike(provider):
         row = {
             "case": case,
             "checked_at": datetime.now(UTC).isoformat(),
-            "model": EMBEDDING_MODEL if case == "P06" else CHAT_MODEL,
+            "model": {"P02": STREAM_MODEL, "P06": EMBEDDING_MODEL}.get(case, CHAT_MODEL),
             "request_schema": label,
             "status": "not_run",
         }

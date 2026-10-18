@@ -16,6 +16,8 @@ from .embeddings import EmbeddingFailure, validate_vectors
 from .providers import ProviderFailure
 
 CHAT_MODEL = "@cf/zai-org/glm-4.7-flash"
+# Streams chat and RAG answers: GLM fabricated venues and prices in live holdout (2026-10-18).
+STREAM_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 EMBEDDING_MODEL = "@cf/baai/bge-m3"
 MAX_RESPONSE_BYTES = 2 * 1024 * 1024
 
@@ -27,6 +29,7 @@ class CloudflareSettings:
     chat_model: str = CHAT_MODEL
     embedding_model: str = EMBEDDING_MODEL
     thinking: bool = False
+    stream_model: str = STREAM_MODEL
 
     @classmethod
     def from_environment(cls, environment=None):
@@ -39,17 +42,18 @@ class CloudflareSettings:
             )
         chat = environment.get("AGENT_LAB_CHAT_MODEL", CHAT_MODEL)
         embedding = environment.get("AGENT_LAB_EMBEDDING_MODEL", EMBEDDING_MODEL)
-        if chat != CHAT_MODEL or embedding != EMBEDDING_MODEL:
+        stream = environment.get("AGENT_LAB_STREAM_MODEL", STREAM_MODEL)
+        if chat != CHAT_MODEL or embedding != EMBEDDING_MODEL or stream != STREAM_MODEL:
             raise RuntimeError("Model is outside the verified free-model allowlist")
         # Off by default: with reasoning on, GLM spent the whole 2048-token budget and
         # returned no content in live holdout (2026-10-18, Will chose off).
         thinking = environment.get("AGENT_LAB_THINKING", "off")
         if thinking not in ("on", "off"):
             raise RuntimeError("AGENT_LAB_THINKING must be on or off")
-        return cls(account, token, chat, embedding, thinking == "on")
+        return cls(account, token, chat, embedding, thinking == "on", stream)
 
     def chat_options(self) -> dict:
-        # Undocumented on Workers AI but measured effective for GLM-4.7-flash (D6b probe).
+        # GLM only. Undocumented on Workers AI but measured effective (D6b probe).
         if self.thinking:
             return {}
         return {"extra_body": {"chat_template_kwargs": {"enable_thinking": False}}}
@@ -163,11 +167,10 @@ class CloudflareProvider:
         try:
             async with asyncio.timeout(60), self.client() as client:
                 stream = await client.chat.completions.create(
-                    model=self.settings.chat_model,
+                    model=self.settings.stream_model,
                     messages=[m.model_dump() for m in messages],
                     stream=True,
                     max_completion_tokens=2048,
-                    **self.settings.chat_options(),
                 )
                 async with stream:
                     finished = False
