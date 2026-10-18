@@ -16,10 +16,10 @@ from .embeddings import EmbeddingFailure, validate_vectors
 from .providers import ProviderFailure
 
 CHAT_MODEL = "@cf/zai-org/glm-4.7-flash"
-# Streams chat and RAG answers: GLM fabricated venues and prices in live holdout; Will chose
-# Gemma over llama after the 2026-10-18 comparison. Thinking off: on, it truncated at 2048.
-STREAM_MODEL = "@cf/google/gemma-4-26b-a4b-it"
-STREAM_OPTIONS = {
+# Chat, RAG answers and reports: GLM fabricated venues and broke report constraints in live
+# holdout; Will chose Gemma after the 2026-10-18 comparison. Thinking on truncated at 2048.
+CONVERSATION_MODEL = "@cf/google/gemma-4-26b-a4b-it"
+CONVERSATION_OPTIONS = {
     "max_completion_tokens": 4096,
     "extra_body": {"chat_template_kwargs": {"enable_thinking": False}},
 }
@@ -34,7 +34,7 @@ class CloudflareSettings:
     chat_model: str = CHAT_MODEL
     embedding_model: str = EMBEDDING_MODEL
     thinking: bool = False
-    stream_model: str = STREAM_MODEL
+    conversation_model: str = CONVERSATION_MODEL
 
     @classmethod
     def from_environment(cls, environment=None):
@@ -47,15 +47,15 @@ class CloudflareSettings:
             )
         chat = environment.get("AGENT_LAB_CHAT_MODEL", CHAT_MODEL)
         embedding = environment.get("AGENT_LAB_EMBEDDING_MODEL", EMBEDDING_MODEL)
-        stream = environment.get("AGENT_LAB_STREAM_MODEL", STREAM_MODEL)
-        if chat != CHAT_MODEL or embedding != EMBEDDING_MODEL or stream != STREAM_MODEL:
+        conversation = environment.get("AGENT_LAB_CONVERSATION_MODEL", CONVERSATION_MODEL)
+        if chat != CHAT_MODEL or embedding != EMBEDDING_MODEL or conversation != CONVERSATION_MODEL:
             raise RuntimeError("Model is outside the verified free-model allowlist")
         # Off by default: with reasoning on, GLM spent the whole 2048-token budget and
         # returned no content in live holdout (2026-10-18, Will chose off).
         thinking = environment.get("AGENT_LAB_THINKING", "off")
         if thinking not in ("on", "off"):
             raise RuntimeError("AGENT_LAB_THINKING must be on or off")
-        return cls(account, token, chat, embedding, thinking == "on", stream)
+        return cls(account, token, chat, embedding, thinking == "on", conversation)
 
     def chat_options(self) -> dict:
         # GLM only. Undocumented on Workers AI but measured effective (D6b probe).
@@ -128,15 +128,20 @@ class CloudflareProvider:
         message, _ = await self.completion_with_usage(messages, **options)
         return message
 
-    async def completion_with_usage(self, messages: list[dict], **options):
+    async def completion_with_usage(
+        self, messages: list[dict], *, conversation: bool = False, **options
+    ):
         from .run_models import Usage
 
+        if conversation:
+            model, defaults = self.settings.conversation_model, CONVERSATION_OPTIONS
+        else:
+            model = self.settings.chat_model
+            defaults = {"max_completion_tokens": 2048, **self.settings.chat_options()}
         try:
             async with asyncio.timeout(60), self.client() as client:
                 result = await client.chat.completions.create(
-                    model=self.settings.chat_model,
-                    messages=messages,
-                    **{"max_completion_tokens": 2048, **self.settings.chat_options(), **options},
+                    model=model, messages=messages, **{**defaults, **options}
                 )
             choice = result.choices[0]
             if choice.finish_reason not in ("stop", "tool_calls"):
@@ -172,10 +177,10 @@ class CloudflareProvider:
         try:
             async with asyncio.timeout(60), self.client() as client:
                 stream = await client.chat.completions.create(
-                    model=self.settings.stream_model,
+                    model=self.settings.conversation_model,
                     messages=[m.model_dump() for m in messages],
                     stream=True,
-                    **STREAM_OPTIONS,
+                    **CONVERSATION_OPTIONS,
                 )
                 async with stream:
                     finished = False
@@ -224,8 +229,9 @@ class CloudflareProvider:
                     ),
                 }
             ],
-            # GLM-4.7-flash is not on the Workers AI JSON mode list and json_schema timed out
-            # live (D6b, 2026-10-18); one forced tool call carries the schema instead.
+            conversation=True,
+            # GLM json_schema timed out live (D6b, 2026-10-18); one forced tool call carries
+            # the schema, which Gemma also honours.
             tools=[
                 {
                     "type": "function",
