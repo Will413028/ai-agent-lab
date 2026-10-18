@@ -11,3 +11,5 @@
 獨立 design-review：3項，改2／記1／提0／駁回0。共用 SearchQuery，固定 discovery validation；用 structured ImageToolError 穿過 SDK，而非解析自由文字；SDK2.2 支援 dual-era，指定 mode=legacy 是本機 auto probe 實測逾時的明確結論，原因尚未確認，SDK 升級／auto 重驗成功時再評估。見 [S5 audit](s5-design-audit.md)。
 
 可重跑：`make check-mcp`；ignored log `artifacts/s5-check-mcp-final.log`。真 MCP transport 通過不等於 live 圖片任務通過。
+
+2026-10-18 追加：MCP live 失敗根因是 Commons API 的 `thumburl` 已改為 `thumb.wikimedia.org`（實測 10/10），`public_https` 只接受 `upload.wikimedia.org`，整批被判 dependency_failure。圖片 URL 改接受兩個 Wikimedia media host，回歸測試先紅後綠；直接呼叫與 `ImageMCP("live")` 都回圖片並含 attribution，縮圖 HTTP 200 image/jpeg。`make check`、`make check-mcp` 通過，logs `artifacts/commons-thumb-check*.log`。

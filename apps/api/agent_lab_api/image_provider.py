@@ -6,10 +6,13 @@ from .image_models import ImageResult, ImageSearchResult
 from .network import PublicWeb
 from .web_tools import plain_html
 
+# Commons serves originals from upload.wikimedia.org and API thumbnails from thumb.wikimedia.org.
+MEDIA_HOSTS = ("upload.wikimedia.org", "thumb.wikimedia.org")
 
-def public_https(value: str, host: str) -> str:
+
+def public_https(value: str, *hosts: str) -> str:
     parsed = urlsplit(value)
-    if parsed.scheme != "https" or parsed.hostname != host or parsed.username is not None:
+    if parsed.scheme != "https" or parsed.hostname not in hosts or parsed.username is not None:
         raise ToolFailure("dependency_failure", "圖片來源 URL 格式不正確。")
     return value
 
@@ -47,7 +50,7 @@ def commons_images(data: dict) -> ImageSearchResult:
         images.append(
             ImageResult(
                 title=str(page.get("title", ""))[:300],
-                url=public_https(info.get("thumburl", info.get("url", "")), "upload.wikimedia.org"),
+                url=public_https(info.get("thumburl", info.get("url", "")), *MEDIA_HOSTS),
                 source_url=public_https(info.get("descriptionurl", ""), "commons.wikimedia.org"),
                 artist=artist,
                 license=license_name,

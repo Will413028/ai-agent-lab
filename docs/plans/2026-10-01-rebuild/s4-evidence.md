@@ -10,3 +10,5 @@
 獨立 design-review：2項，改1／記1／提0／駁回0。改為分開 import/execute/export 的 Docker lifecycle，移除 marker／output tail 協定；D4 已採免費免 key provider，記明 challenge 與 live evidence 邊界。盤點見 [S4 audit](s4-design-audit.md)。
 
 可重跑：`make check-tools`。歷史 logs 為 ignored `artifacts/s4-check-tools-final2.log`、`s4-terminal-cancel-final.log`、`s4-terminal-cancel-deadline.log`、`s4-terminal-final.log`；不能據此宣稱 Cloudflare native tool calling 已驗。
+
+2026-10-18 追加：DDG live 3 個查詢（英文 2、中文 1）均回 5 筆結果，未遇 challenge；先前 challenge 判定為間歇性，程式未改。

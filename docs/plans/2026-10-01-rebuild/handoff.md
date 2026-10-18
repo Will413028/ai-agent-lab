@@ -28,4 +28,4 @@ Docker是共用服務，只操作當下確認owned資源。S3曾協調19個容�
 
 使用者日後決定啟用live時，`make live-spike`驗P01–P06、`make live-holdout`用owned test DB與臨時API驗6種固定情境；`make review-holdout`保存人工rubric判定。原attempt／PDF／citations先保存再清DB，review sidecar不改原結果。沒有把此流程列成等待權限的blocking work。
 
-DDG live曾challenge；Commons HTTP成功但MCP live尚未成功。GLM/BGE個人帳號能力未驗，D6b僅在實際不相容時重評，不靜默fallback。遠端CI只跑offline checks，不含live。
+DDG live 2026-10-18 3/3 成功（曾被 challenge，屬間歇性）；Commons MCP live 2026-10-18 通過（修正縮圖 host）。GLM/BGE個人帳號能力未驗，D6b僅在實際不相容時重評，不靜默fallback。遠端CI只跑offline checks，不含live。

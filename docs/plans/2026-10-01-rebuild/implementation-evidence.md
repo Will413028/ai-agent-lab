@@ -12,8 +12,8 @@
 | R06 | KnowledgeStore、migration002 pgvector | 真pgvector exact cosine／topK／threshold／filter |
 | R07 | conditional rewrite、原問題與引用快照 | 無歷史不外呼；status／原問題兩項mutation；S3 evidence |
 | R08 | 本機 RAG | D1批准取代阿里雲，不另接雲store |
-| R09 | `/tools`、8項typed tools、artifact API | [S4 evidence](s4-evidence.md)，真Docker與PDF；DDG live未成功 |
-| R10 | `/images`、官方SDK stdio server/client | [S5 evidence](s5-evidence.md)，真協定＋fixture；Commons MCP live未成功 |
+| R09 | `/tools`、8項typed tools、artifact API | [S4 evidence](s4-evidence.md)，真Docker與PDF；DDG live 2026-10-18 3/3 成功（曾被 challenge，屬間歇性） |
+| R10 | `/images`、官方SDK stdio server/client | [S5 evidence](s5-evidence.md)，真協定＋fixture；Commons MCP live 2026-10-18 通過（修正縮圖 host） |
 | R11 | AgentRuntime composition | [S6 evidence](s6-evidence.md)，13unit／loop/cancel mutations |
 | R12 | `/agent`、run SSE／DB／cancel／history | 6DB、2browser、下載／刷新／mobile |
 | R13 | run ID／elapsed_ms／工具摘要／usage／學習文件 | allowlist無reasoning；unknown標示；D1批准省略SDK/Ollama獨立教程 |
