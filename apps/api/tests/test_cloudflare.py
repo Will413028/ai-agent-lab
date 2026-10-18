@@ -173,6 +173,9 @@ async def test_report_uses_single_forced_tool_call_instead_of_json_mode():
     assert report == {"title": "標題", "suggestions": ["一"]}
     # GLM-4.7-flash is not on the Workers AI JSON mode list; json_schema timed out live.
     assert "response_format" not in sent
+    # Reports share the conversation model: GLM reports broke user constraints in live holdout.
+    assert sent["model"] == "@cf/google/gemma-4-26b-a4b-it"
+    assert sent["chat_template_kwargs"] == {"enable_thinking": False}
     assert sent["tool_choice"] == "required" and sent["parallel_tool_calls"] is False
     assert [tool["function"]["name"] for tool in sent["tools"]] == ["submit_report"]
     assert sent["tools"][0]["function"]["parameters"]["required"] == ["title", "suggestions"]
@@ -195,7 +198,7 @@ async def test_report_without_exactly_one_valid_call_is_invalid_report(message):
 
 
 @pytest.mark.parametrize("value,sent", [(None, False), ("on", None), ("off", False)])
-async def test_thinking_switch_applies_to_glm_and_stream_uses_gemma(value, sent):
+async def test_thinking_switch_applies_to_glm_and_conversation_uses_gemma(value, sent):
     environment = {"CLOUDFLARE_ACCOUNT_ID": "0" * 32, "CLOUDFLARE_API_TOKEN": "fixture-placeholder"}
     if value is not None:
         environment["AGENT_LAB_THINKING"] = value
@@ -244,13 +247,13 @@ def test_unknown_thinking_value_fails_fast():
         )
 
 
-def test_unknown_stream_model_fails_fast():
+def test_unknown_conversation_model_fails_fast():
     with pytest.raises(RuntimeError):
         CloudflareSettings.from_environment(
             {
                 "CLOUDFLARE_ACCOUNT_ID": "0" * 32,
                 "CLOUDFLARE_API_TOKEN": "fixture-placeholder",
-                "AGENT_LAB_STREAM_MODEL": "@cf/zai-org/glm-4.7-flash",
+                "AGENT_LAB_CONVERSATION_MODEL": "@cf/zai-org/glm-4.7-flash",
             }
         )
 
