@@ -23,3 +23,13 @@ Fresh S7 design-review檢查測試分層、配置／SDK／budget、DB與API owne
 S3–S7累計12項design-review，改9／記3／提0／駁回0；AGENTS.md补5條現行規則、local移1條session歷史到handoff，共6處指令檔對帳。R01–R13／B01–B06映射見[implementation evidence](implementation-evidence.md)。
 
 Cloudflare live與人工品質評分未跑；DDG live challenge、Commons MCP live dependency_failure保留原事實。本次功能與文件同批提交；遠端CI未跑，未push。沒有把真SDK transport＋fixture稱為真模型品質。
+
+2026-10-18 live holdout（Will 指示 reasoning 開／關各跑一輪；native PG18.6＋pgvector；機器 load average 71–95，延遲偏高）：
+
+| Attempt | thinking | H01 | H02 | H03 | H04 | H05 | H06 |
+|---|---|---|---|---|---|---|---|
+| `live-holdout-20261018T033445615668` | on | failed（未記原因） | failed | failed | failed：模型改用 terminal，`tool_timeout` | passed | passed |
+| `live-holdout-20261018T034056220736` | on（補診斷後重跑） | failed `provider_failure` | needs_review | failed `provider_failure` | needs_review | passed | passed |
+| `live-holdout-20261018T033822042093` | off | needs_review | needs_review | needs_review | needs_review | passed | passed |
+
+reasoning 開時聊天失敗的根因已實測：H01 第一問單獨串流，reasoning 用完 `max_completion_tokens` 2048，content 0 字、`finish_reason=length`、53.3s。第一輪原本把例外吞掉，`live_holdout.py` 已補 `failure_detail`（只記例外類型、HTTP status、app sanitized code）。needs_review 待 Will 依 rubric 評分；機械通過不代表品質。
