@@ -26,6 +26,7 @@ class CloudflareSettings:
     token: str = field(repr=False)
     chat_model: str = CHAT_MODEL
     embedding_model: str = EMBEDDING_MODEL
+    thinking: bool = True
 
     @classmethod
     def from_environment(cls, environment=None):
@@ -40,7 +41,16 @@ class CloudflareSettings:
         embedding = environment.get("AGENT_LAB_EMBEDDING_MODEL", EMBEDDING_MODEL)
         if chat != CHAT_MODEL or embedding != EMBEDDING_MODEL:
             raise RuntimeError("Model is outside the verified free-model allowlist")
-        return cls(account, token, chat, embedding)
+        thinking = environment.get("AGENT_LAB_THINKING", "on")
+        if thinking not in ("on", "off"):
+            raise RuntimeError("AGENT_LAB_THINKING must be on or off")
+        return cls(account, token, chat, embedding, thinking == "on")
+
+    def chat_options(self) -> dict:
+        # Undocumented on Workers AI but measured effective for GLM-4.7-flash (D6b probe).
+        if self.thinking:
+            return {}
+        return {"extra_body": {"chat_template_kwargs": {"enable_thinking": False}}}
 
     @property
     def base_url(self):
@@ -115,7 +125,7 @@ class CloudflareProvider:
                 result = await client.chat.completions.create(
                     model=self.settings.chat_model,
                     messages=messages,
-                    **{"max_completion_tokens": 2048, **options},
+                    **{"max_completion_tokens": 2048, **self.settings.chat_options(), **options},
                 )
             choice = result.choices[0]
             if choice.finish_reason not in ("stop", "tool_calls"):
@@ -155,6 +165,7 @@ class CloudflareProvider:
                     messages=[m.model_dump() for m in messages],
                     stream=True,
                     max_completion_tokens=2048,
+                    **self.settings.chat_options(),
                 )
                 async with stream:
                     finished = False

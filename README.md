@@ -48,7 +48,7 @@ make -C /absolute/path/to/ai-agent-lab check-agent
 
 先讀 [多輪聊天契約](docs/conversations.md)，跟一次 `page → POST conversation chat → begin → context → FakeProvider → finish → done`，觀察 DB 歷史與模型視窗的不同。再讀 [串流契約](docs/streaming.md)、[RAG 契約](docs/rag.md)、[工具與 MCP](docs/tools.md)、[Agent 契約](docs/agent.md) 與 [學習練習](docs/learning.md)。在 `/knowledge` 匯入文件，回到對話勾選「使用知識庫」，可查看原問題與檢索來源。修改 Python 契約後執行 `make contracts`，不手改生成型別。
 
-Cloudflare 使用 `AGENT_LAB_PROVIDER=cloudflare`，僅 server 消費 `CLOUDFLARE_ACCOUNT_ID` 與 `CLOUDFLARE_API_TOKEN`；請在本機安全環境設定，勿貼入程式、前端或 logs。缺配置會在啟動時停止，不 fallback。SDK `max_retries=0`；使用 GLM-4.7-Flash／BGE-M3，沒有付費切換。模型切換或 `AGENT_LAB_EMBEDDING_VERSION` 變更後，須在知識庫明確重建索引。實際帳號能力仍以 live spike 為準。模型設定 `AGENT_LAB_CHAT_MODEL`／`AGENT_LAB_EMBEDDING_MODEL` 只接受目前核對的免費 GLM／BGE allowlist，未知模型 fail fast。
+Cloudflare 使用 `AGENT_LAB_PROVIDER=cloudflare`，僅 server 消費 `CLOUDFLARE_ACCOUNT_ID` 與 `CLOUDFLARE_API_TOKEN`；請在本機安全環境設定，勿貼入程式、前端或 logs。缺配置會在啟動時停止，不 fallback。SDK `max_retries=0`；使用 GLM-4.7-Flash／BGE-M3，沒有付費切換。模型切換或 `AGENT_LAB_EMBEDDING_VERSION` 變更後，須在知識庫明確重建索引。實際帳號能力仍以 live spike 為準。模型設定 `AGENT_LAB_CHAT_MODEL`／`AGENT_LAB_EMBEDDING_MODEL` 只接受目前核對的免費 GLM／BGE allowlist，未知模型 fail fast。`AGENT_LAB_THINKING=on|off`（預設 on）控制 GLM reasoning；off 送 `chat_template_kwargs.enable_thinking=false`，Workers AI 未記載但實測有效，其他值 fail fast。
 
 之後補好600權限的ignored `.env`（Account ID／API Token）可執行 `make api-cloudflare`，它只在server消費個人設定，同時啟用live工具。`make live-spike`記P01–P06能力，`make live-holdout`建立專屬disposable DB與臨時live API，執行固定人工情境；拒絕fixture，needs_review需依rubric逐例判讀。此兩項目前未實測，不進預設CI。
 
