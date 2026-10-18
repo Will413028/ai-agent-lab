@@ -195,7 +195,7 @@ async def test_report_without_exactly_one_valid_call_is_invalid_report(message):
 
 
 @pytest.mark.parametrize("value,sent", [(None, False), ("on", None), ("off", False)])
-async def test_thinking_switch_is_sent_to_completion_and_stream(value, sent):
+async def test_thinking_switch_applies_to_glm_and_stream_uses_llama(value, sent):
     environment = {"CLOUDFLARE_ACCOUNT_ID": "0" * 32, "CLOUDFLARE_API_TOKEN": "fixture-placeholder"}
     if value is not None:
         environment["AGENT_LAB_THINKING"] = value
@@ -224,8 +224,12 @@ async def test_thinking_switch_is_sent_to_completion_and_stream(value, sent):
     )
     await model.completion([{"role": "user", "content": "hi"}])
     _ = [item async for item in model.stream(build_context([], "hi"), "normal")]
-    for body in bodies:
-        assert body.get("chat_template_kwargs", {}).get("enable_thinking") == sent
+    completion, stream = bodies
+    assert completion["model"] == "@cf/zai-org/glm-4.7-flash"
+    assert completion.get("chat_template_kwargs", {}).get("enable_thinking") == sent
+    # Chat and RAG answers stream from llama: GLM fabricated venues and prices in live holdout.
+    assert stream["model"] == "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+    assert "chat_template_kwargs" not in stream
 
 
 def test_unknown_thinking_value_fails_fast():
@@ -235,5 +239,16 @@ def test_unknown_thinking_value_fails_fast():
                 "CLOUDFLARE_ACCOUNT_ID": "0" * 32,
                 "CLOUDFLARE_API_TOKEN": "fixture-placeholder",
                 "AGENT_LAB_THINKING": "maybe",
+            }
+        )
+
+
+def test_unknown_stream_model_fails_fast():
+    with pytest.raises(RuntimeError):
+        CloudflareSettings.from_environment(
+            {
+                "CLOUDFLARE_ACCOUNT_ID": "0" * 32,
+                "CLOUDFLARE_API_TOKEN": "fixture-placeholder",
+                "AGENT_LAB_STREAM_MODEL": "@cf/zai-org/glm-4.7-flash",
             }
         )
