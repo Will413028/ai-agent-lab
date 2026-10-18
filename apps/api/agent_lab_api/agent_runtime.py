@@ -66,7 +66,7 @@ class CloudflareRunModel:
         self.provider = provider
 
     async def decision(self, messages, tools):
-        return await self.provider.completion_with_usage(messages, tools=tools)
+        return await self.provider.completion_with_usage(messages, tools=tools, conversation=True)
 
 
 class RunCancelled(Exception):

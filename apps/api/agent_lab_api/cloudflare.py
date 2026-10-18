@@ -16,8 +16,9 @@ from .embeddings import EmbeddingFailure, validate_vectors
 from .providers import ProviderFailure
 
 CHAT_MODEL = "@cf/zai-org/glm-4.7-flash"
-# Chat, RAG answers and reports: GLM fabricated venues and broke report constraints in live
-# holdout; Will chose Gemma after the 2026-10-18 comparison. Thinking on truncated at 2048.
+# Chat, RAG answers, reports and agent runs: GLM fabricated venues, broke report constraints
+# and failed agent runs in live holdout; Will chose Gemma after the 2026-10-18 comparison.
+# Thinking on truncated at 2048.
 CONVERSATION_MODEL = "@cf/google/gemma-4-26b-a4b-it"
 CONVERSATION_OPTIONS = {
     "max_completion_tokens": 4096,
