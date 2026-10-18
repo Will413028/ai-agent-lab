@@ -2,6 +2,7 @@ import io
 from pathlib import Path
 from xml.sax.saxutils import escape
 
+from opencc import OpenCC
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle
@@ -10,6 +11,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
 FONT_PATH = Path(__file__).resolve().parents[1] / "assets" / "NotoSansTC-Regular.ttf"
+# NotoSansTC lacks some Simplified glyphs, which vanished silently from live PDFs.
+TO_TAIWAN = OpenCC("s2twp")
 
 
 def generate_pdf(content: str) -> bytes:
@@ -36,7 +39,7 @@ def generate_pdf(content: str) -> bytes:
     )
     title = ParagraphStyle("title", parent=body, fontSize=18, leading=27, spaceAfter=14)
     story = []
-    for line in content.splitlines():
+    for line in TO_TAIWAN.convert(content).splitlines():
         is_heading = line.startswith("# ") or line.startswith("## ")
         text = line.removeprefix("## ").removeprefix("# ") if is_heading else line
         if text.strip():
