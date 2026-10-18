@@ -56,3 +56,5 @@ Blind 替代案例（Will 2026-10-18 同意）：corpus v2 新增 H07（chat，�
 | deepseek-v4-flash-0731 | — | — | 5/5 HTTP 403 PermissionDenied，本帳號不可用 | — | — |
 
 結論：維持 llama-3.3-70b。Gemma 品質較好但會吃滿 2048 tokens 被截斷（推斷含隱藏 reasoning），需放寬上限與延遲才可用；Qwen 便宜快速但常不給計畫。單一開發案例、每模型 5 次，不代表可靠率；簡體自動計數因 OpenCC 將「台」「吃」視為異體而失效，改人工判讀。
+
+改用 Gemma（Will 2026-10-18 指定）：bounded probe 2 requests，`chat_template_kwargs.enable_thinking=false` 讓開發案例第二輪 output 由約 2000 降到 930 tokens、finish stop、無 reasoning 欄位；`reasoning_effort=low` 反而 2181 tokens 且帶 reasoning。串流固定 thinking off、上限 4096。`live-holdout-20261018T054906038991`（load 46–190）：Gemma 負責的 H01／H03／H07 passed；GLM report H08 passed、H02 failed（建議花錢買省力用品）；GLM Agent H04 failed（generatePDF 只傳 fileName，`invalid_arguments`，副作用工具不重試）；H05／H06 passed；結論 incomplete。兩個失敗都在未更換的 GLM 路徑。
