@@ -275,3 +275,25 @@ async def test_stream_keeps_numeric_content_tokens():
         )
     ]
     assert "".join(pieces) == "預算600元"
+
+
+async def test_agent_decisions_use_the_conversation_model():
+    from agent_lab_api.agent_runtime import CloudflareRunModel
+
+    sent = {}
+
+    def handler(request):
+        sent.update(json.loads(request.content))
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {"finish_reason": "stop", "message": {"role": "assistant", "content": "完成"}}
+                ]
+            },
+        )
+
+    # GLM agent runs failed three holdouts in a row with three different errors (2026-10-18).
+    await CloudflareRunModel(provider(handler)).decision([{"role": "user", "content": "hi"}], [])
+    assert sent["model"] == "@cf/google/gemma-4-26b-a4b-it"
+    assert sent["chat_template_kwargs"] == {"enable_thinking": False}
