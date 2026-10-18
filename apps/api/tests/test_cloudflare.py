@@ -144,3 +144,51 @@ async def test_sdk_transport_byte_limit_closes_response():
     with pytest.raises(ProviderFailure):
         await model.completion([])
     assert closed
+
+
+def report_response(message):
+    return httpx.Response(
+        200, json={"choices": [{"finish_reason": "tool_calls", "message": message}]}
+    )
+
+
+def report_call(arguments, name="submit_report"):
+    return {"id": "call_0", "type": "function", "function": {"name": name, "arguments": arguments}}
+
+
+async def test_report_uses_single_forced_tool_call_instead_of_json_mode():
+    sent = {}
+
+    def handler(request):
+        sent.update(json.loads(request.content))
+        return report_response(
+            {
+                "role": "assistant",
+                "content": None,
+                "tool_calls": [report_call('{"title":"標題","suggestions":["一"]}')],
+            }
+        )
+
+    report = await provider(handler).report(build_context([], "你好"))
+    assert report == {"title": "標題", "suggestions": ["一"]}
+    # GLM-4.7-flash is not on the Workers AI JSON mode list; json_schema timed out live.
+    assert "response_format" not in sent
+    assert sent["tool_choice"] == "required" and sent["parallel_tool_calls"] is False
+    assert [tool["function"]["name"] for tool in sent["tools"]] == ["submit_report"]
+    assert sent["tools"][0]["function"]["parameters"]["required"] == ["title", "suggestions"]
+
+
+@pytest.mark.parametrize(
+    "message",
+    [
+        {"role": "assistant", "content": "沒有呼叫工具"},
+        {"role": "assistant", "tool_calls": [report_call("{}"), report_call("{}")]},
+        {"role": "assistant", "tool_calls": [report_call("not json")]},
+        {"role": "assistant", "tool_calls": [report_call("{}", name="other")]},
+    ],
+)
+async def test_report_without_exactly_one_valid_call_is_invalid_report(message):
+    # None fails LoveReport validation in the endpoint, which answers 502 invalid_report.
+    assert (
+        await provider(lambda _: report_response(message)).report(build_context([], "hi")) is None
+    )
