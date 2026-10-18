@@ -45,3 +45,14 @@ H01 後續（Will 2026-10-18 同意建議）：(1) 接受限制，聊天頁 Clou
 聊天串流改用 llama-3.3-70b（Will 2026-10-18 同意）：首輪 `live-holdout-20261018T043727953457` 的 H01／H03 在約 1.3s `provider_failure`。根因實測：Workers AI llama 串流把數字 token 以 JSON number 送出（例：第 48 chunk `content: 44`），parser 只收字串。回歸測試先紅後綠，修正後同介面重跑 H01 問題完整串流。下一次 holdout 臨時 API 30s 內未就緒（load average 45→70，import 即 6.2s；stderr 未保存，推斷為負載），重跑 `live-holdout-20261018T044746339772`：AI 代評 H01–H04 passed、H05／H06 機械 passed，**review 結論 passed**。限制：AI 代評非本人；H01／H02 已被 prompt 修正參考，不是 blind；單次通過不代表可靠率。另發現缺陷：PDF 嵌入 `NotoSansTC`，generatePDF 輸入含簡體「协」「档」但 PDF 未渲染（實測），待處理。
 
 Blind 替代案例（Will 2026-10-18 同意）：corpus v2 新增 H07（chat，桃園→嘉義更正）與 H08（report，只有週六中午），寫好即凍結、未用於 prompt 調整；H01／H02 標 `tuned_on`。`live-holdout-20261018T045347176064`（GLM thinking off＋llama 串流，load 30–38）：AI 代評 8 例全 passed，review 結論 passed。H04 PDF 有 1 個拼錯的網址（docs.python.org.zh-cn）不在搜尋結果。限制：AI 代評、單次通過、非可靠率。
+
+聊天串流模型比較（2026-10-18，Will 確認 Workers Free）：台中開發案例 2 輪，4 模型 × 5 次輪替順序，35 requests，`artifacts/model-compare-20261018.json`；load average 16→194，延遲僅供參考。人工判讀第二輪：
+
+| 模型 | 依更正條件給出計畫 | 專有店名／價格捏造 | finish | 延遲中位數（範圍） | Neurons／2 輪中位數 |
+|---|---|---|---|---|---|
+| llama-3.3-70b（現用） | 5/5 | 0/5 | stop 10/10 | 5.0s（3.1–19.2） | 115 |
+| gemma-4-26b-a4b-it | 5/5，內容最完整、附查證關鍵字 | 0/5 | **length 3/10**（截斷，app 會判 provider_failure） | 23.5s（8.0–42.1） | 103 |
+| qwen3-30b-a3b-fp8（thinking off） | 2/5（3 次只反問關係狀態） | 1/5（「素心」「素味」舉例店名） | stop 10/10 | 1.4s（0.8–4.1） | 8 |
+| deepseek-v4-flash-0731 | — | — | 5/5 HTTP 403 PermissionDenied，本帳號不可用 | — | — |
+
+結論：維持 llama-3.3-70b。Gemma 品質較好但會吃滿 2048 tokens 被截斷（推斷含隱藏 reasoning），需放寬上限與延遲才可用；Qwen 便宜快速但常不給計畫。單一開發案例、每模型 5 次，不代表可靠率；簡體自動計數因 OpenCC 將「台」「吃」視為異體而失效，改人工判讀。
