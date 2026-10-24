@@ -1,5 +1,7 @@
 # 一次看懂模型到工具的循環
 
+圖解版（Agent 迴圈、取消、RAG、對話記憶、沙箱與結構化輸出）：用瀏覽器開[study-guide.html](study-guide.html)。
+
 先啟動`make api`與`make web`，開`/agent`。預設離線模型，搜尋是fixture，PDF是實際產物。輸入目標並執行，能看到searchWeb、generatePDF、最後答案與下载連結；重新整理後仍能讀到run歷史。
 
 一次工具往返的messages如下。call ID由模型提供，tool結果必須回到同一個ID；第二次模型決策才看得到搜尋結果。
