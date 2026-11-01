@@ -4,6 +4,7 @@
 
 - 實作前讀取 `docs/plans/2026-10-01-rebuild.md` 與對應附件；委託執行的決定依該計畫處理，未驗證的外部能力不能當成已通過。
 - 計畫內維護進度；本檔只放現行規則。
+- Branch model：日常改動推到 `dev`；`main` 只經 `dev`→`main` 的 PR 以 merge commit 合併（不 squash、不 rebase），不直推 `main`。
 - 決策紀錄（ADR）：`docs/adr/`。
 - 所有模型呼叫與工具執行由 FastAPI 負責；憑證不能進入前端、tracked files、logs 或測試 fixture。
 - 單人版預設只供本機使用；不新增多使用者登入、計費或公開部署。
